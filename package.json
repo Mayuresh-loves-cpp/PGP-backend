@@ -1,0 +1,14 @@
+{
+  "name": "the-personal-growth-pyramid-backend",
+  "version": "1.0.0",
+  "description": "A Personal Growth development project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mayuresh Shinde",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
