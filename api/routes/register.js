@@ -6,3 +6,5 @@ registerRouter.get("/", (req, res, next) => {
         message: 'in register page'
     });
 });
+
+module.exports = registerRouter

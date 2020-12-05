@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
 
-const loginRoutes = require('./api/routes/login');
-var registerRoutes = require('./api/routes/register');
+// const { loginRoutes } = require('./api/routes/login');
+// var registerRoutes = require('./api/routes/register');
 
-app.use('/login', loginRoutes);
-app.use('/register', registerRoutes);
+const authRoute = require('./api/routes/auth')
+const indexRoute = require('./api/routes/index')
+
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/', indexRoute);
+// app.use('/register', registerRoutes);
 
 module.exports = app;
