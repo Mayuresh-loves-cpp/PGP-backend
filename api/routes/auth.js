@@ -58,7 +58,7 @@ router.post('/login', async (req, res, next) => {
     }*/
 })
 
-router.get('/register', (req, res, next) => {
+router.post('/register', (req, res, next) => {
     try {
         const user = new newUser({
             userEmailId: req.body.userEmailId,
