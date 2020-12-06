@@ -6,13 +6,29 @@ const newUser = require("../models/user");
 const mongoose = require("mongoose");
 
 
-router.get('/login', (req, res, next) => {
-    try {
-        console.log("This is login api")
-        res.send("This is login api")
-    } catch (error) {
+router.post('/login', async (req, res, next) => {
+    /*try {
+        var userDetails = {
+            userMail: req.body.userEmailId,
+            userPassword: req.body.password
+        };*/
+        //const id = req.params.uid;
+        const doc = await newUser.findOne(req.body)
+        /*.then(doc => {
+            console.log(doc);
+            res.status(200).json({doc});
+            res.send("user was found!");
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err});
+            res.send("got some error");
+        });*/
+        console.log("This is login api", doc)
+        res.json(doc);
+    /*} catch (error) {
         res.send(error)
-    }
+    }*/
 })
 
 router.get('/register', (req, res, next) => {

@@ -1,18 +1,27 @@
 const express = require("express");
 const router = express.Router();
 
-function getOTP(){
+function getOTP(len){
     var digits = '0123456789';
     var otp = '';
-    var length = 4;
+    const  length = len;
 
-    for(let i=1; i <= Length; i++){
+    for(let i=1; i <= length; i++){
         var index = Math.floor(Math.random()*(digits.length));
         otp = otp + digits[index];
     }
     return otp;
 }
 
-router.post('/', (req, res, next) => {
-    res.send(200);
+router.post('/get', (req, res, next) => {
+    /*try {
+        
+    } catch (error) {
+        res.send(error);
+    }*/
+    const OTP = getOTP(4);
+        console.log(OTP);
+        res.send("in get otp " + OTP);
 });
+
+module.exports= router
