@@ -10,7 +10,7 @@ const authRoute = require('./api/routes/auth')
 const indexRoute = require('./api/routes/index')
 const otpRoute = require('./api/routes/otp');
 
-mongoose.connect('mongodb://localhost:27017/tmp?readPreference=primary&appname=MongoDB%20Compass&ssl=false', {
+mongoose.connect('mongodb+srv://durgesh07:934521796@cluster0.zr3jl.mongodb.net/PGP?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
