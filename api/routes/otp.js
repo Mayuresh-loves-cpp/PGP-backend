@@ -1,4 +1,5 @@
 const express = require("express");
+const nodeMailer = require("nodemailer");
 const router = express.Router();
 
 function getOTP(len){
@@ -19,9 +20,43 @@ router.post('/get', (req, res, next) => {
     } catch (error) {
         res.send(error);
     }*/
+    const doc = req.body;
+    const email = doc["userEmailId"];
     const OTP = getOTP(4);
-        console.log(OTP);
-        res.send("in get otp " + OTP);
+
+    var transporter = nodeMailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'fpersonalgrowthpyramid@gmail.com',
+            pass: 'Personal-growth-request'
+        }
+    });
+
+    var mailOptions = {
+        from: 'fpersonalgrowthpyramid@gmail.com',
+        to: email,
+        subject: '[password reset]Personal Growth Development Project Team',
+        //text: 'Your OTP: ' + OTP,
+        html: '<h1>Your OTP: </h1><h2>' + OTP + '</h2>'
+    };
+
+    transporter.sendMail(mailOptions, function (error, info){
+        if(error){
+            console.log(error);
+            res.send(404).json({
+                status: false
+            });
+        }
+        else{
+            console.log('Email sent! ');
+            res.json({
+                status: true
+            });
+        }
+    });
+
+    //console.log(OTP);
+    
 });
 
 module.exports= router

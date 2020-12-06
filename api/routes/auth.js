@@ -3,8 +3,19 @@ const app = require("../../app");
 
 const router = express.Router();
 const newUser = require("../models/user");
+//const loginUser = require("../models/login");
 const mongoose = require("mongoose");
 
+/*router.get('/login', (req, res, next) => {
+    try {
+        const luser = new loginUser({
+            userEmailId: req.body.userEmailId,
+            password: req.body.password
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});*/
 
 router.post('/login', async (req, res, next) => {
     /*try {
@@ -13,7 +24,25 @@ router.post('/login', async (req, res, next) => {
             userPassword: req.body.password
         };*/
         //const id = req.params.uid;
-        const doc = await newUser.findOne(req.body)
+        const doc = await newUser.findOne(req.body);
+        const data = JSON.parse(JSON.stringify(doc));
+        if(doc != null){
+            delete data.password;
+            console.log("This is login api", data)
+            res.json({
+                success: true,
+                data: data
+            });
+        }
+        else{
+            console.log("user not found", doc)
+            res.json({
+                success: false,
+                data: doc
+            });
+        }
+        
+        
         /*.then(doc => {
             console.log(doc);
             res.status(200).json({doc});
@@ -24,8 +53,7 @@ router.post('/login', async (req, res, next) => {
             res.status(500).json({error: err});
             res.send("got some error");
         });*/
-        console.log("This is login api", doc)
-        res.json(doc);
+        
     /*} catch (error) {
         res.send(error)
     }*/
@@ -45,11 +73,16 @@ router.get('/register', (req, res, next) => {
         .catch(error => {
             console.log(error);
         });
-        console.log("This is login api")
-        res.send("This is login api")
+        console.log("new user registered");
+        res.json({
+            success: true
+        });
     } catch (error) {
-        res.send(error)
+        console.log(error);
+        res.json({
+            success: false
+        });
     }
-})
+});
 
 module.exports= router
