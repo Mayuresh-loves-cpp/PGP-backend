@@ -4,6 +4,7 @@ const { generateOtp, checkUserExist, saveOtp, checkOtp, updatePassword } = requi
 module.exports = {
     sendOtp: async (req, res, next) => {
         try {
+            console.log("send otp",req.query)
             const userExist = await checkUserExist(req.query.email)
             if (userExist) {
                 const otp = generateOtp()
@@ -26,6 +27,7 @@ module.exports = {
     },
     checkOtp: async (req, res, next) => {
         try {
+            console.log("check otp",req.body)
             const { id, otp } = req.body
             const result = await checkOtp(id, otp)
             console.log(result)
@@ -41,6 +43,7 @@ module.exports = {
     },
     newPassword: async (req, res, next) => {
         try {
+            console.log("reset password",req.body)
             const { id, password } = req.body
             const result = await updatePassword(id, password)
             if (result) {

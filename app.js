@@ -15,6 +15,9 @@ mongoose.connect('mongodb+srv://durgesh07:934521796@cluster0.zr3jl.mongodb.net/P
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
+mongoose.connection.on("connected", () => {
+    console.log("Database connected")
+})
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
