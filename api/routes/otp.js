@@ -1,5 +1,6 @@
 const express = require("express");
 const nodeMailer = require("nodemailer");
+const newOtp = require("../models/otpSchema");
 const router = express.Router();
 
 function getOTP(len){
@@ -20,10 +21,15 @@ router.post('/get', (req, res, next) => {
     } catch (error) {
         res.send(error);
     }*/
-    const doc = req.body;
-    const email = doc["userEmailId"];
+    
+    //
     const OTP = getOTP(4);
-
+    const doc = new newOtp({
+            userID: req.body._id,
+            userEmailId: req.body.userEmailId,
+            userOtp: OTP
+        });
+    const email = doc["userEmailId"];
     var transporter = nodeMailer.createTransport({
         service: 'gmail',
         auth: {
@@ -40,6 +46,18 @@ router.post('/get', (req, res, next) => {
         html: '<h1>Your OTP: </h1><h2>' + OTP + '</h2>'
     };
 
+    doc.save((error) => {
+        if (error) {
+            console.log("could not save data" + error);
+        } else {
+            console.log("data was saved!");
+            res.json({
+                status: true,
+                otp: OTP
+            });
+        }
+    });
+
     transporter.sendMail(mailOptions, function (error, info){
         if(error){
             console.log(error);
@@ -49,14 +67,9 @@ router.post('/get', (req, res, next) => {
         }
         else{
             console.log('Email sent! ');
-            res.json({
-                status: true
-            });
         }
     });
-
-    //console.log(OTP);
-    
+    //console.log(OTP);    
 });
 
 module.exports= router
