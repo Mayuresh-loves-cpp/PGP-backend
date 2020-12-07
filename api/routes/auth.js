@@ -109,7 +109,7 @@ router.post('/resetPasswordEmail', async (req, res, next) => {
 
 router.post('/passwordUpdateConfirmation', async (req, res, next) => {
     const doc = req.body;
-    newUser.findOne({_id: doc["_id"]}, function (err, foundObject) {
+    newUser.findOne({userEmailId: doc["userEmailId"]}, function (err, foundObject) {
         if (err) {
             console.log(err);
             res.status(500).send();
