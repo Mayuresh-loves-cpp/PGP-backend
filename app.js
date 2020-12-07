@@ -3,6 +3,7 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require('cors');
 // const { loginRoutes } = require('./api/routes/login');
 // var registerRoutes = require('./api/routes/register');
 
@@ -18,12 +19,13 @@ mongoose.connect('mongodb+srv://durgesh07:934521796@cluster0.zr3jl.mongodb.net/P
 mongoose.connection.on("connected", () => {
     console.log("Database connected")
 })
-
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+
 
 app.use('/api/v2/auth/', newAuth)
 app.use('/api/v1/auth', authRoute);
