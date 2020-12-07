@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
 const otpSchema = mongoose.Schema({
-    userId: String,
-    userEmailId: String,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     userOtp: String
 });
 
