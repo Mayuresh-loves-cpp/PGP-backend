@@ -4,7 +4,7 @@ const { generateOtp, checkUserExist, saveOtp, checkOtp, updatePassword } = requi
 module.exports = {
     sendOtp: async (req, res, next) => {
         try {
-            console.log("send otp",req.query)
+            console.log("send otp", req.query)
             const userExist = await checkUserExist(req.query.email)
             if (userExist) {
                 const otp = generateOtp()
@@ -16,9 +16,9 @@ module.exports = {
                     } else {
                         return res.status(500).json({ success: false, err: "Something went wrong" })
                     }
-                } else {
-                    return res.status(404).json({ success: false, err: "User not found" })
                 }
+            } else {
+                return res.status(404).json({ success: false, err: "User not found" })
             }
         } catch (error) {
             console.log(error)
@@ -27,7 +27,7 @@ module.exports = {
     },
     checkOtp: async (req, res, next) => {
         try {
-            console.log("check otp",req.body)
+            console.log("check otp", req.body)
             const { id, otp } = req.body
             const result = await checkOtp(id, otp)
             console.log(result)
@@ -43,7 +43,7 @@ module.exports = {
     },
     newPassword: async (req, res, next) => {
         try {
-            console.log("reset password",req.body)
+            console.log("reset password", req.body)
             const { id, password } = req.body
             const result = await updatePassword(id, password)
             if (result) {
