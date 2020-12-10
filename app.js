@@ -7,9 +7,9 @@ const cors = require('cors');
 // const { loginRoutes } = require('./api/routes/login');
 // var registerRoutes = require('./api/routes/register');
 
-const authRoute = require('./api/routes/auth')
-const indexRoute = require('./api/routes/index')
-const otpRoute = require('./api/routes/otp');
+// const authRoute = require('./api/routes/auth')
+// const indexRoute = require('./api/routes/index')
+// const otpRoute = require('./api/routes/otp');
 const newAuth = require('./api/routes/newAuth');
 
 mongoose.connect('mongodb+srv://durgesh07:934521796@cluster0.zr3jl.mongodb.net/PGP?retryWrites=true&w=majority', {
@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-app.use('/api/v2/auth/', newAuth)
-app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/auth/', newAuth)
+//app.use('/api/v1/auth', authRoute);
 // app.use('/api/v1/otp', otpRoute);
 // app.use('/api/v1/', indexRoute);
 

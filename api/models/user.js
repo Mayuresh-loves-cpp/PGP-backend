@@ -7,7 +7,4 @@ const userSchema = mongoose.Schema({
     lastName: String
 });
 
-
-
-module.exports = mongoose.model('user', userSchema);
-
+module.exports = mongoose.model('users', userSchema)

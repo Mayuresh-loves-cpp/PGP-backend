@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const app = require("../../app");
 
 const router = express.Router();
@@ -139,4 +139,4 @@ router.post('/passwordUpdateConfirmation', async (req, res, next) => {
     //res.json(doc);
 });
 
-module.exports = router
+module.exports = router*/
