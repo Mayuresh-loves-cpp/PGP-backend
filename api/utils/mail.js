@@ -16,7 +16,7 @@ const sendMail = async (email, otp) => {
             from: 'fpersonalgrowthpyramid@gmail.com',
             to: email,
             subject: 'Password reset otp',
-            text: 'Here is the otp' + otp,
+            text: 'Here is the otp: ' + otp,
 
         };
 

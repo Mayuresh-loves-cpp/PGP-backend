@@ -6,7 +6,7 @@ module.exports = {
         const data = JSON.parse(JSON.stringify(doc));
         if (doc != null) {
             delete data.password;
-            console.log("This is login api", data)
+            console.log("login successful", data)
             res.json({
                 success: true,
                 data: data
@@ -73,10 +73,16 @@ module.exports = {
         }, function (err, foundObject) {
             if (err) {
                 console.log(err);
+                res.json({
+                    success: false
+                });
                 res.status(500).send();
             } else {
                 if (!foundObject) {
                     res.status(404).send();
+                    res.json({
+                        success: false
+                    });
                 } else {
                     if (req.body.password) {
                         foundObject.password = req.body.password;
@@ -84,6 +90,9 @@ module.exports = {
                     foundObject.save(function (err, updatedObject) {
                         if (err) {
                             console.log(err);
+                            res.json({
+                                success: false
+                            });
                             res.status(500).send();
                         } else {
                             res.json({

@@ -139,4 +139,4 @@ router.post('/passwordUpdateConfirmation', async (req, res, next) => {
     //res.json(doc);
 });
 
-module.exports = router*/
+module.exports = router
