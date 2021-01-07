@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const Otp = require("../models/otpSchema");
 var mongoose = require('mongoose');
-const { findByIdAndUpdate } = require("../models/user");
+const {
+    findByIdAndUpdate
+} = require("../models/user");
 
 
 module.exports = {
@@ -10,24 +12,25 @@ module.exports = {
         return otp
     },
     checkUserExist: async (email) => {
-        const user = await User.findOne({ userEmailId: email })
+        const user = await User.findOne({
+            userEmailId: email
+        })
         return user
     },
     saveOtp: async (id, otp) => {
         const userId = mongoose.Types.ObjectId(id);
-        const result = await Otp.create({ userId, userOtp: otp })
+        const result = await Otp.create({
+            userId,
+            userOtp: otp
+        })
         return result
     },
     checkOtp: async (id, otp) => {
         const userId = mongoose.Types.ObjectId(id);
-        const result = await Otp.findOne({ userId, userOtp: otp })
+        const result = await Otp.findOne({
+            userId,
+            userOtp: otp
+        })
         return result
     },
-    updatePassword: async (id, password) => {
-        const result = await User.findByIdAndUpdate(id, { $set: { password: password } })
-        return result
-    }
 }
-
-
-
