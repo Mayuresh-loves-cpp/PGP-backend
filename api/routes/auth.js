@@ -1,142 +1,22 @@
-/*const express = require("express");
-const app = require("../../app");
-
+const express = require("express");
 const router = express.Router();
-const newUser = require("../models/user");
-//const loginUser = require("../models/login");
-const mongoose = require("mongoose");
-
-/*router.get('/login', (req, res, next) => {
-    try {
-        const luser = new loginUser({
-            userEmailId: req.body.userEmailId,
-            password: req.body.password
-        });
-    } catch (error) {
-        console.log(error);
-    }
-});*/
-
-router.post('/login', async (req, res, next) => {
-    /*try {
-        var userDetails = {
-            userMail: req.body.userEmailId,
-            userPassword: req.body.password
-        };*/
-    //const id = req.params.uid;
-    const doc = await newUser.findOne(req.body);
-    const data = JSON.parse(JSON.stringify(doc));
-    if (doc != null) {
-        delete data.password;
-        console.log("This is login api", data)
-        res.json({
-            success: true,
-            data: data
-        });
-    } else {
-        console.log("user not found", doc)
-        res.json({
-            success: false,
-            data: doc
-        });
-    }
+const authController = require("../controllers/auth")
+const userFunction = require("../controllers/loginSignup")
+const surveyController = require("../controllers/survey")
 
 
-    /*.then(doc => {
-        console.log(doc);
-        res.status(200).json({doc});
-        res.send("user was found!");
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({error: err});
-        res.send("got some error");
-    });*/
+router.get('/otp', authController.sendOtp)
+router.post('/otp', authController.checkOtp)
+router.patch('/password', authController.newPassword)
+router.post('/login', userFunction.login)
+router.post('/register', userFunction.register)
+router.post('/resetPasswordEmail', userFunction.resetPasswordEmail)
+router.post('/passwordUpdateConfirmation', userFunction.passwordUpdateConfirmation)
+router.post('/saveQuestion', surveyController.saveQuestion)
+router.post('/updateQuestion', surveyController.updateQuestion)
+router.get('/getDailySurvey', surveyController.getDailySurvey)
+router.get('/getWeeklySurvey', surveyController.getWeeklySurvey)
+router.get('/getMonthlySurvey', surveyController.getMonthlySurvey)
 
-    /*} catch (error) {
-        res.send(error)
-    }*/
-})
-
-router.post('/register', (req, res, next) => {
-    try {
-        const user = new newUser({
-            userEmailId: req.body.userEmailId,
-            password: req.body.password,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
-        });
-        user.save().then(result => {
-                console.log(result);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        console.log("new user registered");
-        res.json({
-            success: true
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            success: false
-        });
-    }
-});
-
-router.post('/resetPasswordEmail', async (req, res, next) => {
-    const doc = await newUser.findOne(req.body);
-    const data = JSON.parse(JSON.stringify(doc));
-
-    if (doc != null) {
-        delete data["userEmailId"];
-        delete data["password"];
-        delete data["firstName"];
-        delete data["lastName"];
-        console.log("user exist with email: ", doc["userEmailId"])
-        res.json({
-            success: true,
-            data: data
-        });
-    } else {
-        console.log("user not found!")
-        res.json({
-            success: false,
-            data: doc
-        });
-    }
-});
-
-router.post('/passwordUpdateConfirmation', async (req, res, next) => {
-    const doc = req.body;
-    newUser.findOne({userEmailId: doc["userEmailId"]}, function (err, foundObject) {
-        if (err) {
-            console.log(err);
-            res.status(500).send();
-        }
-        else{
-            if(!foundObject){
-                res.status(404).send();
-            }
-            else{
-                if(req.body.password){
-                    foundObject.password = req.body.password;
-                }
-                foundObject.save(function (err, updatedObject) {
-                    if(err){
-                        console.log(err);
-                        res.status(500).send();
-                    }
-                    else{
-                        res.json({
-                            success: true
-                        });
-                    }
-                });
-            }
-        }
-    });
-    //res.json(doc);
-});
 
 module.exports = router

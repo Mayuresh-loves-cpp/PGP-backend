@@ -4,13 +4,8 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors');
-// const { loginRoutes } = require('./api/routes/login');
-// var registerRoutes = require('./api/routes/register');
 
-// const authRoute = require('./api/routes/auth')
-// const indexRoute = require('./api/routes/index')
-// const otpRoute = require('./api/routes/otp');
-const newAuth = require('./api/routes/newAuth');
+const newAuth = require('./api/routes/auth');
 
 mongoose.connect('mongodb+srv://durgesh07:934521796@cluster0.zr3jl.mongodb.net/PGP?authSource=admin&replicaSet=atlas-a4xj7z-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
     useNewUrlParser: true,
