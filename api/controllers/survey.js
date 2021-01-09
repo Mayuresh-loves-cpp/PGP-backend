@@ -3,7 +3,8 @@ const questionSchema = require("../models/surveyQueSchema");
 const {
     saveq,
     updateq,
-    saveres
+    saveres,
+    isSurveyExist
 } = require("../utils/surveyHelper")
 
 module.exports = {
@@ -91,7 +92,8 @@ module.exports = {
     },
     getDailySurvey: async (req, res, next) => {
         const doc = await questionSchema.find({
-            surveyType: "daily"
+            surveyType: "daily",
+            active: true
         });
         const data = JSON.parse(JSON.stringify(doc));
         if (doc != null) {
@@ -109,7 +111,8 @@ module.exports = {
     },
     getWeeklySurvey: async (req, res, next) => {
         const doc = await questionSchema.findOne({
-            surveyType: "weekly"
+            surveyType: "weekly",
+            active: true
         });
         const data = JSON.parse(JSON.stringify(doc));
         if (doc != null) {
@@ -125,27 +128,10 @@ module.exports = {
             res.status(500).send();
         }
     },
-    getDailySurvey: async (req, res, next) => {
-        const doc = await questionSchema.find({
-            surveyType: "daily"
-        });
-        const data = JSON.parse(JSON.stringify(doc));
-        if (doc != null) {
-            res.json({
-                success: true,
-                data: data
-            })
-        } else {
-            res.json({
-                success: false,
-                data: data
-            })
-            res.status(500).send()
-        }
-    },
     getMonthlySurvey: async (req, res, next) => {
         const doc = await questionSchema.findOne({
-            surveyType: "Monthly"
+            surveyType: "Monthly",
+            active: true
         });
         const data = JSON.parse(JSON.stringify(doc));
         if (doc != null) {
@@ -181,6 +167,26 @@ module.exports = {
             })
             console.log('failed to save response!')
             res.status(404).send()
+        }
+    },
+    surveyStatus: async (req, res, next) => {
+        try {
+            const result = await isSurveyExist(req.body)
+            if (result) {
+                res.json({
+                    success: true,
+                    response: "recent survey exists!"
+                })
+                res.status(200).send()
+            } else {
+                res.json({
+                    success: false,
+                    response: "no recent survey exists!"
+                })
+                res.status(500).send()
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
     // add new route api here

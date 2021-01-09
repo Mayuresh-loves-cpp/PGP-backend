@@ -24,4 +24,8 @@ module.exports = {
         const result = await Response.create(data)
         return result
     },
+    isSurveyExist: async (data) => {
+        const result = Response.findOne(data)
+        return result
+    },
 }

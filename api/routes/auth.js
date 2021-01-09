@@ -18,6 +18,7 @@ router.get('/getDailySurvey', surveyController.getDailySurvey)
 router.get('/getWeeklySurvey', surveyController.getWeeklySurvey)
 router.get('/getMonthlySurvey', surveyController.getMonthlySurvey)
 router.post('/saveResponse', surveyController.saveResponse)
+router.post('/surveyStatus', surveyController.surveyStatus)
 
 
 module.exports = router
