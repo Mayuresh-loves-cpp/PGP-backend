@@ -7,6 +7,17 @@ const {
     isSurveyExist
 } = require("../utils/surveyHelper")
 
+const responseStructure = {
+    userID: null,
+    surveyType: null,
+    surveyNumber: null,
+    response: [{
+        questionID: null,
+        answer: null,
+        questionType: null
+    }]
+}
+
 module.exports = {
     saveQuestion: (req, res, next) => {
         try {
@@ -99,7 +110,8 @@ module.exports = {
         if (doc != null) {
             res.json({
                 success: true,
-                data: data
+                data: data,
+                response: responseStructure
             });
         } else {
             res.json({
@@ -118,7 +130,8 @@ module.exports = {
         if (doc != null) {
             res.json({
                 success: true,
-                data: data
+                data: data,
+                response: responseStructure
             });
         } else {
             res.json({
@@ -137,7 +150,8 @@ module.exports = {
         if (doc != null) {
             res.json({
                 success: true,
-                data: data
+                data: data,
+                response: responseStructure
             });
         } else {
             res.json({
