@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const responseSchema = mongoose.Schema({
     userID: mongoose.Types.ObjectId,
-    surveyNumber: Number,
+    //surveyNumber: Number,
     surveyType: String,
     response: Array
 }, {

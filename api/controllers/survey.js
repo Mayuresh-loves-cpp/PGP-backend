@@ -164,20 +164,26 @@ module.exports = {
     saveResponse: async (req, res, next) => {
         try {
             const status = await saveres(req.body);
+            console.log(status);
             if (status) {
                 res.json({
                     success: true,
+                    responseID: status._id,
+                    createdAt: status.createdAt,
+                    updatedAt: status.updatedAt,
                 })
                 res.status(200).send()
             } else {
                 res.json({
                     success: false,
+                    responseID: null,
                 })
                 res.status(500).send()
             }
         } catch (error) {
             res.json({
                 success: false,
+                responseID: null,
             })
             console.log('failed to save response!')
             res.status(404).send()
