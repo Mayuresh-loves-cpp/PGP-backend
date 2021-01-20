@@ -1,23 +1,21 @@
+/**
+ * operational apis for survey
+ */
+
+// importing database
 const questionSchema = require("../models/surveyQueSchema");
 
+// importing survey helper functions
 const {
     saveq,
     updateq,
     saveres,
+    getSurvey,
+    sendSurvey,
     isSurveyExist
 } = require("../utils/surveyHelper")
 
-const responseStructure = {
-    userID: null,
-    surveyType: null,
-    surveyNumber: null,
-    response: [{
-        questionID: null,
-        answer: null,
-        questionType: null
-    }]
-}
-
+// api routes
 module.exports = {
     saveQuestion: (req, res, next) => {
         try {
@@ -102,64 +100,89 @@ module.exports = {
         }
     },
     getDailySurvey: async (req, res, next) => {
-        const doc = await questionSchema.find({
-            surveyType: "daily",
-            active: true
-        });
-        const data = JSON.parse(JSON.stringify(doc));
-        if (doc != null) {
-            res.json({
-                success: true,
-                data: data,
-                response: responseStructure
-            });
-        } else {
+        try {
+            const doc = await getSurvey("daily")
+            sendSurvey(doc, res)
+
+        } catch (error) {
+            console.log(error)
             res.json({
                 success: false,
-                data: data
-            });
-            res.status(500).send();
+                data: null
+            })
+            res.status(404).send();
         }
+
+
+        // const data = JSON.parse(JSON.stringify(doc));
+        // if (doc != null) {
+        //     res.json({
+        //         success: true,
+        //         data: data,
+        //     });
+        // } else {
+        //     res.json({
+        //         success: false,
+        //         data: data
+        //     });
+        //     res.status(500).send();
+        // }
     },
     getWeeklySurvey: async (req, res, next) => {
-        const doc = await questionSchema.findOne({
-            surveyType: "weekly",
-            active: true
-        });
-        const data = JSON.parse(JSON.stringify(doc));
-        if (doc != null) {
-            res.json({
-                success: true,
-                data: data,
-                response: responseStructure
-            });
-        } else {
+        try {
+            const doc = await getSurvey("weekly")
+            sendSurvey(doc, res)
+
+        } catch (error) {
+            console.log(error)
             res.json({
                 success: false,
-                data: data
-            });
-            res.status(500).send();
+                data: null
+            })
+            res.status(404).send();
         }
+        // const doc = await getSurvey("weekly");
+        // const data = JSON.parse(JSON.stringify(doc));
+        // if (doc != null) {
+        //     res.json({
+        //         success: true,
+        //         data: data,
+        //     });
+        // } else {
+        //     res.json({
+        //         success: false,
+        //         data: data
+        //     });
+        //     res.status(500).send();
+        // }
     },
     getMonthlySurvey: async (req, res, next) => {
-        const doc = await questionSchema.findOne({
-            surveyType: "Monthly",
-            active: true
-        });
-        const data = JSON.parse(JSON.stringify(doc));
-        if (doc != null) {
-            res.json({
-                success: true,
-                data: data,
-                response: responseStructure
-            });
-        } else {
+        try {
+            const doc = await getSurvey("monthly")
+            sendSurvey(doc, res)
+
+        } catch (error) {
+            console.log(error)
             res.json({
                 success: false,
-                data: data
-            });
-            res.status(500).send();
+                data: null
+            })
+            res.status(404).send();
         }
+        // const doc = await getSurvey("monthly");
+        // const data = JSON.parse(JSON.stringify(doc));
+        // if (doc != null) {
+        //     res.json({
+        //         success: true,
+        //         data: data,
+        //     });
+        // } else {
+        //     res.json({
+        //         success: false,
+        //         data: data
+        //     });
+        //     res.status(500).send();
+        // }
     },
     saveResponse: async (req, res, next) => {
         try {

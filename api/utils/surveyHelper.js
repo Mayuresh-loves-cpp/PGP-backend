@@ -6,6 +6,7 @@ const {
     findByIdAndUpdate,
     createIndexes
 } = require("../models/surveyQueSchema");
+const survey = require("../controllers/survey");
 
 module.exports = {
     saveq: async (data) => {
@@ -23,6 +24,30 @@ module.exports = {
     saveres: async (data) => {
         const result = await Response.create(data)
         return result
+    },
+    getSurvey: async (type) => {
+        console.log('survey type to find ' + type)
+        const doc = await Question.find({
+            surveyType: type,
+            active: true
+        });
+        console.log(doc)
+        return doc
+    },
+    sendSurvey: async (survey, res) => {
+        if (survey != null) {
+            const data = JSON.parse(JSON.stringify(survey));
+            res.json({
+                success: true,
+                data: data,
+            });
+        } else {
+            res.json({
+                success: false,
+                data: data
+            });
+            res.status(500).send();
+        }
     },
     isSurveyExist: async (data) => {
         const result = Response.findOne(data)
