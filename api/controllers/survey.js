@@ -214,22 +214,48 @@ module.exports = {
     },
     surveyStatus: async (req, res, next) => {
         try {
-            const result = await isSurveyExist(req.body)
+            // const dailyStatus = {}
+            // const weeklyStatus = {}
+            // const monthlyStatus = {}
+            const result = []
+            if (req.body.dailySurveyResponseID != null) {
+                const dailyStatus = await isSurveyExist(req.body.dailySurveyResponseID, req.body.userID, res)
+                result.push(dailyStatus)
+            } else {
+                result.push(null)
+            }
+            if (req.body.weeklySurveyResponseID != null) {
+                const weeklyStatus = await isSurveyExist(req.body.weeklySurveyResponseID, req.body.userID, res)
+                result.push(weeklyStatus)
+            } else {
+                result.push(null)
+            }
+            if (req.body.monthlySurveyResponseID != null) {
+                const monthlyStatus = await isSurveyExist(req.body.monthlySurveyResponseID, req.body.userID, res)
+                result.push(monthlyStatus)
+            } else {
+                result.push(null)
+            }
             if (result) {
                 res.json({
                     success: true,
-                    response: "recent survey exists!"
+                    response: "recent survey exists!",
+                    surveys: result,
                 })
                 res.status(200).send()
             } else {
                 res.json({
                     success: false,
-                    response: "no recent survey exists!"
+                    response: "no recent survey exists!",
                 })
                 res.status(500).send()
             }
         } catch (error) {
             console.log(error)
+            res.json({
+                success: false,
+            })
+            res.status(404).send()
         }
     },
     // add new route api here
