@@ -26,6 +26,9 @@ module.exports = {
         return result
     },
     getSurvey: async (type) => {
+        if(type == "" || type == undefined) {
+            return null
+        }
         console.log('survey type to find ' + type)
         const doc = await Question.find({
             surveyType: type,
@@ -35,7 +38,7 @@ module.exports = {
         return doc
     },
     sendSurvey: async (survey, res) => {
-        if (survey != null) {
+        if (survey != null || survey != undefined) {
             const data = JSON.parse(JSON.stringify(survey));
             res.json({
                 success: true,
@@ -44,7 +47,7 @@ module.exports = {
         } else {
             res.json({
                 success: false,
-                data: data
+                data: null
             });
             res.status(500).send();
         }

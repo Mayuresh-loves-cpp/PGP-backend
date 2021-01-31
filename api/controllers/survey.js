@@ -99,6 +99,19 @@ module.exports = {
             res.status(404).send();
         }
     },
+    getSurvey: async (req, res, next) => {
+        try {
+            const doc = await getSurvey(req.body.surveyType)
+            sendSurvey(doc, res)
+        } catch (error) {
+            console.log(error)
+            res.json({
+                success: false,
+                data: null
+            })
+            res.status(404).send();
+        }
+    },
     getDailySurvey: async (req, res, next) => {
         try {
             const doc = await getSurvey("daily")
