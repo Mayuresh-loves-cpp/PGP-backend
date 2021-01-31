@@ -186,7 +186,14 @@ module.exports = {
     },
     saveResponse: async (req, res, next) => {
         try {
-            const status = await saveres(req.body);
+            const date = new Date()
+            const doc = {
+                userID: req.body.userID,
+                surveyDate: new Date(parseInt(date.getFullYear()), parseInt(date.getMonth()), parseInt(date.getDate())),
+                surveyType: req.body.surveyType,
+                response: req.body.response,
+            }
+            const status = await saveres(doc);
             console.log(status);
             if (status) {
                 res.json({
