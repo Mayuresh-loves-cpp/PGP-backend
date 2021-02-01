@@ -6,7 +6,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors');
 
-const newAuth = require('./api/routes/auth');
+const auth = require('./api/routes/auth');
+const ques = require("./api/routes/question");
+const survey = require("./api/routes/survey");
 
 // connecting to database
 mongoose.connect('mongodb+srv://durgesh07:934521796@cluster0.zr3jl.mongodb.net/PGP?authSource=admin&replicaSet=atlas-a4xj7z-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
@@ -24,6 +26,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.use('/api/v1/auth/', newAuth)
+app.use('/api/v1/auth/', auth)
+app.use("/api/v1/questions", ques)
+app.use("/api/v1/survey", survey)
 
 module.exports = app;

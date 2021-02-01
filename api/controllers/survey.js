@@ -12,7 +12,8 @@ const {
     saveres,
     getSurvey,
     sendSurvey,
-    isSurveyExist
+    isSurveyExist,
+    isSurveyExist2,
 } = require("../utils/surveyHelper")
 
 // api routes
@@ -125,21 +126,6 @@ module.exports = {
             })
             res.status(404).send();
         }
-
-
-        // const data = JSON.parse(JSON.stringify(doc));
-        // if (doc != null) {
-        //     res.json({
-        //         success: true,
-        //         data: data,
-        //     });
-        // } else {
-        //     res.json({
-        //         success: false,
-        //         data: data
-        //     });
-        //     res.status(500).send();
-        // }
     },
     getWeeklySurvey: async (req, res, next) => {
         try {
@@ -154,20 +140,6 @@ module.exports = {
             })
             res.status(404).send();
         }
-        // const doc = await getSurvey("weekly");
-        // const data = JSON.parse(JSON.stringify(doc));
-        // if (doc != null) {
-        //     res.json({
-        //         success: true,
-        //         data: data,
-        //     });
-        // } else {
-        //     res.json({
-        //         success: false,
-        //         data: data
-        //     });
-        //     res.status(500).send();
-        // }
     },
     getMonthlySurvey: async (req, res, next) => {
         try {
@@ -182,20 +154,6 @@ module.exports = {
             })
             res.status(404).send();
         }
-        // const doc = await getSurvey("monthly");
-        // const data = JSON.parse(JSON.stringify(doc));
-        // if (doc != null) {
-        //     res.json({
-        //         success: true,
-        //         data: data,
-        //     });
-        // } else {
-        //     res.json({
-        //         success: false,
-        //         data: data
-        //     });
-        //     res.status(500).send();
-        // }
     },
     saveResponse: async (req, res, next) => {
         try {
@@ -234,28 +192,42 @@ module.exports = {
     },
     surveyStatus: async (req, res, next) => {
         try {
-            // const dailyStatus = {}
-            // const weeklyStatus = {}
-            // const monthlyStatus = {}
             const result = []
-            if (req.body.dailySurveyResponseID != null) {
-                const dailyStatus = await isSurveyExist(req.body.dailySurveyResponseID, req.body.userID, res)
-                result.push(dailyStatus)
-            } else {
-                result.push(null)
+            const dailyStatus = await isSurveyExist(req.body.userID, "daily")
+            console.log(dailyStatus)
+            if(dailyStatus != null){
+                result.push(dailyStatus) 
             }
-            if (req.body.weeklySurveyResponseID != null) {
-                const weeklyStatus = await isSurveyExist(req.body.weeklySurveyResponseID, req.body.userID, res)
+            const weeklyStatus = await isSurveyExist(req.body.userID, "weekly")
+            console.log(weeklyStatus)
+            if (weeklyStatus != null) {
                 result.push(weeklyStatus)
-            } else {
-                result.push(null)
             }
-            if (req.body.monthlySurveyResponseID != null) {
-                const monthlyStatus = await isSurveyExist(req.body.monthlySurveyResponseID, req.body.userID, res)
+            const monthlyStatus = await isSurveyExist(req.body.userID, "monthly")
+            console.log(monthlyStatus)
+            if (monthlyStatus != null) {
                 result.push(monthlyStatus)
-            } else {
-                result.push(null)
             }
+        
+            // if (req.body.dailySurveyResponseID != null) {
+            //     const dailyStatus = await isSurveyExist2(/*req.body.dailySurveyResponseID,*/req.body.userID, "daily")
+            //     result.push(dailyStatus)
+            // } else {
+            //     // result.push(null)
+            // }
+            // if (req.body.weeklySurveyResponseID != null) {
+            //     const weeklyStatus = await isSurveyExist2(/*req.body.weeklySurveyResponseID,*/ req.body.userID, "weekly")
+            //     result.push(weeklyStatus)
+            // } else {
+            //     // result.push(null)
+            // }
+            // if (req.body.monthlySurveyResponseID != null) {
+            //     const monthlyStatus = await isSurveyExist2(/*req.body.monthlySurveyResponseID,*/ req.body.userID, "monthly")
+            //     result.push(monthlyStatus)
+            // } else {
+            //     // result.push(null)
+            // }
+            
             if (result) {
                 res.json({
                     success: true,
