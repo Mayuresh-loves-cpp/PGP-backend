@@ -114,10 +114,14 @@ module.exports = {
             surveyDate: -1
         })
         result = result[0]
+        if(result == undefined){
+            return null
+        }
+        console.log("result is: " + result)
         var week = result.surveyDate.getWeek();
         var month = result.surveyDate.getMonth();
         var year = result.surveyDate.getFullYear();
-        console.log(typeof result)
+        console.log("showing type of result: " + typeof result)
         if (result == null) {
             return null
         } else if (result.surveyDate < today) {
