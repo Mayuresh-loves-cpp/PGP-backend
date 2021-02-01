@@ -13,7 +13,6 @@ const {
     getSurvey,
     sendSurvey,
     isSurveyExist,
-    isSurveyExist2,
 } = require("../utils/surveyHelper")
 
 // api routes
@@ -195,8 +194,8 @@ module.exports = {
             const result = []
             const dailyStatus = await isSurveyExist(req.body.userID, "daily")
             console.log(dailyStatus)
-            if(dailyStatus != null){
-                result.push(dailyStatus) 
+            if (dailyStatus != null) {
+                result.push(dailyStatus)
             }
             const weeklyStatus = await isSurveyExist(req.body.userID, "weekly")
             console.log(weeklyStatus)
@@ -208,7 +207,7 @@ module.exports = {
             if (monthlyStatus != null) {
                 result.push(monthlyStatus)
             }
-        
+
             // if (req.body.dailySurveyResponseID != null) {
             //     const dailyStatus = await isSurveyExist2(/*req.body.dailySurveyResponseID,*/req.body.userID, "daily")
             //     result.push(dailyStatus)
@@ -227,7 +226,7 @@ module.exports = {
             // } else {
             //     // result.push(null)
             // }
-            
+
             if (result) {
                 res.json({
                     success: true,

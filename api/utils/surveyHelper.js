@@ -2,10 +2,6 @@ const Question = require("../models/surveyQueSchema")
 const Response = require("../models/surveyResponseSchema")
 
 var mongoose = require('mongoose');
-// const {
-//     findByIdAndUpdate,
-//     createIndexes
-// } = require("../models/surveyQueSchema");
 const survey = require("../controllers/survey");
 
 module.exports = {
@@ -26,7 +22,7 @@ module.exports = {
         return result
     },
     getSurvey: async (type) => {
-        if(type == "" || type == undefined) {
+        if (type == "" || type == undefined) {
             return null
         }
         console.log('survey type to find ' + type)
@@ -114,7 +110,9 @@ module.exports = {
         var result = await Response.find({
             userID: uID,
             surveyType: survey,
-        }).sort({surveyDate: -1})
+        }).sort({
+            surveyDate: -1
+        })
         result = result[0]
         var week = result.surveyDate.getWeek();
         var month = result.surveyDate.getMonth();
