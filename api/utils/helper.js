@@ -33,4 +33,10 @@ module.exports = {
         })
         return result
     },
+    checkExistByID: async (uID) => {
+        const result = await User.findOne({_id: uID})
+        console.log("checking if user exist!")
+        console.log("result after finding user in account's db: ", result)
+        return result
+    },
 }

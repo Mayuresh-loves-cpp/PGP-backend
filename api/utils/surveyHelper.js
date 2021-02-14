@@ -110,18 +110,25 @@ module.exports = {
         var result = await Response.find({
             userID: uID,
             surveyType: survey,
-        }).sort({
-            surveyDate: -1
-        })
+        }).exec()
+        // .sort({
+        //     surveyDate: -1
+        // })
+        console.log("type of response " + typeof result)
+        result = result.sort((a, b) => {return b.createdAt - a.createdAt})
         result = result[0]
-        if(result == undefined){
+        console.log("result going to be used for processing: ", result)
+        if (result == undefined) {
+            console.log("sending null from upper if condition")
             return null
         }
-        console.log("result is: " + result)
-        var week = result.surveyDate.getWeek();
-        var month = result.surveyDate.getMonth();
-        var year = result.surveyDate.getFullYear();
+        console.log(survey + " result is: " + result.surveyDate)
+        var week = result.createdAt.getWeek();
+        var month = result.createdAt.getMonth();
+        var year = result.createdAt.getFullYear();
         console.log("showing type of result: " + typeof result)
+        console.log("calculating survey info")
+        console.log("last survey given by the user is on: ", result.surveyDate)
         if (result == null) {
             return null
         } else if (result.surveyDate < today) {
@@ -154,4 +161,10 @@ module.exports = {
             return null
         }
     },
+    isUserExist: async (uID) => {
+        const result = await Response.find({
+            userID: uID,
+        })
+        return result
+    }
 }
