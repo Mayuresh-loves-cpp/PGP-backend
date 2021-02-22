@@ -29,14 +29,16 @@ module.exports = {
             });
             user.save().then(result => {
                     console.log(result);
+                    res.json({
+                        success: true,
+                        userID: result._id
+                    });
                 })
                 .catch(error => {
                     console.log(error);
                 });
             console.log("new user registered");
-            res.json({
-                success: true
-            });
+            
         } catch (error) {
             console.log(error);
             res.json({
