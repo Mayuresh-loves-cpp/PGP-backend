@@ -115,12 +115,21 @@ module.exports = {
         //     surveyDate: -1
         // })
         console.log("type of response " + typeof result)
-        result = result.sort((a, b) => {return b.createdAt - a.createdAt})
+        result = result.sort((a, b) => {
+            return b.createdAt - a.createdAt
+        })
         result = result[0]
         console.log("result going to be used for processing: ", result)
         if (result == undefined) {
             console.log("sending null from upper if condition")
-            return null
+            return {
+                surveyType: survey
+            }
+        }
+        if (result == null) {
+            return {
+                surveyType: survey
+            }
         }
         console.log(survey + " result is: " + result.surveyDate)
         var week = result.createdAt.getWeek();
