@@ -33,12 +33,16 @@ module.exports = {
                         success: true,
                         userID: result._id
                     });
+                    console.log("new user registered");
                 })
                 .catch(error => {
                     console.log(error);
+                    res.json({
+                        success: false,
+                        message: "user already exist!",
+                    });
                 });
-            console.log("new user registered");
-            
+
         } catch (error) {
             console.log(error);
             res.json({

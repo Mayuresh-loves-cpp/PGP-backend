@@ -3,10 +3,24 @@ const mongoose = require("mongoose");
 //     SALT_WORK_FACTOR = 10;
 
 const userSchema = mongoose.Schema({
-    userEmailId: String,
-    password: String,
-    firstName: String,
-    lastName: String
+    userEmailId: {
+        type: String,
+        required: true,
+        // lowercase: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+    }
 });
 
 module.exports = mongoose.model("users", userSchema)
