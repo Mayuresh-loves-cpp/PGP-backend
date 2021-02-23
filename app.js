@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require('cors');
 require('dotenv').config()
-require("./api/utils/init_mongodb")
+require("./api/utils/initMongodb")
 
 const auth = require('./api/routes/auth');
 const ques = require("./api/routes/question");

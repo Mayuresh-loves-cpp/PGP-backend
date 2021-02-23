@@ -1,26 +1,46 @@
 const userSchema = require("../models/user")
+const {
+    loginSchema,
+    registerSchema
+} = require('../utils/validationSchema')
 
 module.exports = {
     login: async (req, res, next) => {
-        const doc = await userSchema.findOne(req.body);
-        const data = JSON.parse(JSON.stringify(doc));
-        if (doc != null) {
-            delete data.password;
-            console.log("login successful", data)
-            res.json({
-                success: true,
-                data: data
-            });
-        } else {
-            console.log("user not found", doc)
+        try {
+            const result = await loginSchema.validateAsync(req.body)
+            console.log("validation result: -\n", result)
+            const doc = await userSchema.findOne(req.body);
+            const data = JSON.parse(JSON.stringify(doc));
+            if (doc != null) {
+                delete data.password;
+                console.log("login successful", data)
+                res.json({
+                    success: true,
+                    data: data,
+                    message: "login successful",
+                });
+            } else {
+                console.log("user not found", doc)
+                res.json({
+                    success: false,
+                    data: doc,
+                    message: "incorrect email id or password",
+                });
+            }
+        } catch (error) {
+            console.log(error)
             res.json({
                 success: false,
-                data: doc
+                data: null,
+                message: "incorrect data format"
             });
+            res.status(400).send()
         }
     },
-    register: (req, res, next) => {
+    register: async (req, res, next) => {
         try {
+            const result = await registerSchema.validateAsync(req.body)
+            console.log("validation result: -\n", result)
             const user = new userSchema({
                 userEmailId: req.body.userEmailId,
                 password: req.body.password,
@@ -45,9 +65,15 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
-            res.json({
-                success: false
-            });
+            if (error.isJoi === true) {
+                res.status(422).json({
+                    success: false
+                }).send();
+            } else {
+                res.status(400).json({
+                    success: false
+                }).send();
+            }
         }
     },
     resetPasswordEmail: async (req, res, next) => {
