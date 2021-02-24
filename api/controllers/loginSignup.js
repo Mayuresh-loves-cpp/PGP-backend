@@ -9,7 +9,7 @@ module.exports = {
         try {
             const result = await loginSchema.validateAsync(req.body)
             console.log("validation result: -\n", result)
-            const doc = await userSchema.findOne(req.body);
+            const doc = await userSchema.findOne(result);
             const data = JSON.parse(JSON.stringify(doc));
             if (doc != null) {
                 delete data.password;
@@ -29,12 +29,11 @@ module.exports = {
             }
         } catch (error) {
             console.log(error)
-            res.json({
+            res.status(400).json({
                 success: false,
                 data: null,
                 message: "incorrect data format"
-            });
-            res.status(400).send()
+            }).send()
         }
     },
     register: async (req, res, next) => {
@@ -42,10 +41,10 @@ module.exports = {
             const result = await registerSchema.validateAsync(req.body)
             console.log("validation result: -\n", result)
             const user = new userSchema({
-                userEmailId: req.body.userEmailId,
-                password: req.body.password,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName
+                userEmailId: result.userEmailId,
+                password: result.password,
+                firstName: result.firstName,
+                lastName: result.lastName
             });
             user.save().then(result => {
                     console.log(result);

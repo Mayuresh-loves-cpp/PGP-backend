@@ -1,9 +1,11 @@
-/**
+/*************************************************
+ * 
  * operational apis for survey
- */
+ * 
+ *************************************************/
 
 // importing database
-const questionSchema = require("../models/surveyQueSchema");
+// const questionSchema = require("../models/surveyQueSchema");
 
 // importing survey helper functions
 const {
@@ -22,9 +24,13 @@ const {
 } = require("../utils/helper");
 const user = require("../models/user");
 
+// importing validation schemeas
+const {
+    questionSchema,
+} = require("../utils/validationSchema")
 // api routes
 module.exports = {
-    saveQuestion: (req, res, next) => {
+    saveQuestion: async (req, res, next) => {
         try {
             // const recevedQuestion = new questionSchema({
             //     surveyType: req.body.surveyType,
@@ -33,8 +39,9 @@ module.exports = {
             //     type: req.body.type,
             //     options: req.body.options
             // });
+            const result = await questionSchema.validateAsync(req.body)
+            console.log(result)
             const state = saveq(req.body);
-
             if (state) {
                 console.log("new question added!");
                 res.json({
@@ -49,10 +56,16 @@ module.exports = {
             }
         } catch (error) {
             console.log(error);
-            res.json({
-                success: false
-            });
-            res.status(404).send();
+            if (error.isJoi === true) {
+                res.status(422).json({
+                    success: false,
+                    message: 'improper data recived'
+                }).send();
+            } else {
+                res.status(400).json({
+                    success: false
+                }).send();
+            }
         }
     },
     updateQuestion: async (req, res, next) => {
