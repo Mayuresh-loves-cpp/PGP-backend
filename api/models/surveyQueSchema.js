@@ -5,7 +5,7 @@ const queSchema = mongoose.Schema({
     active: Boolean,
     question: String,
     questionNumber: String,
-    type: String, // text, text fields, radio button, check box
+    type: String, // text, text fields, radio button, check box, option table
     options: Array
 }, {
     timestamps: true
