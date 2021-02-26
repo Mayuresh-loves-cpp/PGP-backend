@@ -4,7 +4,13 @@ const {
     checkUserExist,
     saveOtp,
     checkOtp,
+    updateInfo,
 } = require('../utils/helper')
+const user = require('../models/user')
+const {
+    mongo,
+    Mongoose
+} = require('mongoose')
 
 module.exports = {
     sendOtp: async (req, res, next) => {
@@ -94,5 +100,44 @@ module.exports = {
                 err: "Server error"
             })
         }
-    }
+    },
+    updateUserInfo: async (req, res, next) => {
+        try {
+            const {
+                userID,
+                update
+            } = req.body
+            if (checkUserExist(userID)) {
+                const result = await updateInfo(userID, update)
+                if (result) {
+                    console.log('user:', userID, 'has been found & data successfully updated')
+                    res.status(200).json({
+                        success: true,
+                        message: "user exists and data sucessfully updated"
+                    }).send()
+                } else {
+                    console.log('user:', userID, 'data didn\'t get updated')
+                    res.status(500).json({
+                        success: false,
+                        message: "user exist and data isn't updated"
+                    }).send()
+                }
+            } else {
+                console.log('user:', userID, 'doesn\'t exist')
+                res.status(500).json({
+                    success: false,
+                    message: "user does not exist"
+                }).send()
+            }
+
+        } catch (error) {
+            console.log(error)
+            console.log("recived wrong information!")
+            res.status(404).json({
+                success: false,
+                message: 'recived wrong information'
+            }).send()
+        }
+    },
+    // add new api here
 }

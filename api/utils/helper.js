@@ -39,4 +39,9 @@ module.exports = {
         console.log("result after finding user in account's db: ", result)
         return result
     },
+    updateInfo: async (id, toUpdate) => {
+        mongoose.set('useFindAndModify', false)
+        const result = await User.findByIdAndUpdate(id, toUpdate)
+        return result
+    },
 }

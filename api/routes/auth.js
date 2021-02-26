@@ -1,5 +1,6 @@
 // imports
 const express = require("express");
+const auth = require("../controllers/auth");
 const router = express.Router();
 const authController = require("../controllers/auth")
 const userFunction = require("../controllers/loginSignup")
@@ -12,5 +13,6 @@ router.post('/login', userFunction.login)
 router.post('/register', userFunction.register)
 router.post('/resetPasswordEmail', userFunction.resetPasswordEmail)
 router.post('/passwordUpdateConfirmation', userFunction.passwordUpdateConfirmation)
+router.post('/updateInfo', authController.updateUserInfo)
 
 module.exports = router
