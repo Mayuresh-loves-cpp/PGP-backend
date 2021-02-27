@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 const {
     findByIdAndUpdate
 } = require("../models/user");
+const user = require("../models/user");
 
 
 module.exports = {
@@ -44,4 +45,13 @@ module.exports = {
         const result = await User.findByIdAndUpdate(id, toUpdate)
         return result
     },
+    checkPassword: async (userID, password) => {
+        if(User.findOne({_id: userID})){
+           const result = await User.findOne({_id: userID, password: password})
+           return result
+        }
+        else{
+            return null
+        }
+    }
 }

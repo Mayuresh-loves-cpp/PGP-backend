@@ -13,6 +13,7 @@ router.post('/login', userFunction.login)
 router.post('/register', userFunction.register)
 router.post('/resetPasswordEmail', userFunction.resetPasswordEmail)
 router.post('/passwordUpdateConfirmation', userFunction.passwordUpdateConfirmation)
-router.post('/updateInfo', authController.updateUserInfo)
+router.patch('/updateInfo', authController.updateUserInfo)
+router.post('/checkPassword', authController.checkPassword)
 
 module.exports = router

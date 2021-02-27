@@ -5,6 +5,7 @@ const {
     saveOtp,
     checkOtp,
     updateInfo,
+    checkPassword
 } = require('../utils/helper')
 const user = require('../models/user')
 const {
@@ -139,5 +140,33 @@ module.exports = {
             }).send()
         }
     },
+    checkPassword: async (req, res, next) => {
+        try {
+            const {
+                userID,
+                password
+            } = req.body
+            const result = await checkPassword(userID, password)
+            if (result) {
+                console.log("user:", userID, "with given password exist in database")
+                res.status(200).json({
+                    success: true,
+                    message: "user with given id and password exist"
+                })
+            } else {
+                console.log("user:", userID, "with given password doesn't exist in database")
+                res.status(200).json({
+                    success: false,
+                    message: "user with given id and password doesn't exist"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(404).json({
+                success: false,
+                message: "incorrect information"
+            })
+        }
+    }
     // add new api here
 }
