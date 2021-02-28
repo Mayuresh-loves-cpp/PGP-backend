@@ -100,7 +100,7 @@ module.exports = {
     passwordUpdateConfirmation: (req, res, next) => {
         const doc = req.body;
         newUser.findOne({
-            userEmailId: doc["userEmailId"]
+            userEmailId: doc["userID"]
         }, function (err, foundObject) {
             if (err) {
                 console.log(err);

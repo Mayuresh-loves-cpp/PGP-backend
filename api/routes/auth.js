@@ -12,7 +12,7 @@ router.patch('/password', authController.newPassword)
 router.post('/login', userFunction.login)
 router.post('/register', userFunction.register)
 router.post('/resetPasswordEmail', userFunction.resetPasswordEmail)
-router.post('/passwordUpdateConfirmation', userFunction.passwordUpdateConfirmation)
+router.patch('/passwordUpdateConfirmation', userFunction.passwordUpdateConfirmation)
 router.patch('/updateInfo', authController.updateUserInfo)
 router.post('/checkPassword', authController.checkPassword)
 

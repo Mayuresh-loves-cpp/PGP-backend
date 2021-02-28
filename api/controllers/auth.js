@@ -7,11 +7,17 @@ const {
     updateInfo,
     checkPassword
 } = require('../utils/helper')
+
 const user = require('../models/user')
+
 const {
     mongo,
     Mongoose
 } = require('mongoose')
+
+const {
+    passwordSchema,
+} = require('../utils/validationSchema')
 
 module.exports = {
     sendOtp: async (req, res, next) => {
@@ -167,6 +173,6 @@ module.exports = {
                 message: "incorrect information"
             })
         }
-    }
+    },
     // add new api here
 }

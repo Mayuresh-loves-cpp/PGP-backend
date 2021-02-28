@@ -21,8 +21,14 @@ const questionSchema = Joi.object({
     options: Joi.array().required(),
 })
 
+const passwordSchema = Joi.object({
+    id: Joi.required(),
+    password: Joi.string().min(6).required(),
+})
+
 module.exports = {
     loginSchema,
     registerSchema,
     questionSchema,
+    passwordSchema,
 }
