@@ -17,7 +17,7 @@ const questionSchema = Joi.object({
     active: Joi.boolean().required(),
     question: Joi.string().required(),
     questionNumber: Joi.string().required(),
-    type: Joi.string().equal('text', 'text fields', 'radio button', 'check box', 'option table').required(),
+    type: Joi.string().equal('short answer', 'long answer', 'radio button', 'check box', 'option table').required(),
     options: Joi.array().required(),
 })
 
