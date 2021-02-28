@@ -6,6 +6,7 @@ const {
 } = require("../models/user");
 const user = require("../models/user");
 
+mongoose.set('useFindAndModify', false)
 
 module.exports = {
     generateOtp: () => {
@@ -41,7 +42,6 @@ module.exports = {
         return result
     },
     updateInfo: async (id, toUpdate) => {
-        mongoose.set('useFindAndModify', false)
         const result = await User.findByIdAndUpdate(id, toUpdate)
         return result
     },
@@ -53,5 +53,14 @@ module.exports = {
         else{
             return null
         }
-    }
+    },
+    updatePassword: async (userID, password) => {
+        if(User.findOne({_id: userID})){
+           const result = await User.findByIdAndUpdate(userID, {password: password})
+           return result
+        }
+        else{
+            return null
+        }
+    },
 }

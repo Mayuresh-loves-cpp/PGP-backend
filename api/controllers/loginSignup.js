@@ -97,42 +97,4 @@ module.exports = {
             });
         }
     },
-    passwordUpdateConfirmation: (req, res, next) => {
-        const doc = req.body;
-        newUser.findOne({
-            userEmailId: doc["userID"]
-        }, function (err, foundObject) {
-            if (err) {
-                console.log(err);
-                res.json({
-                    success: false
-                });
-                res.status(500).send();
-            } else {
-                if (!foundObject) {
-                    res.status(404).send();
-                    res.json({
-                        success: false
-                    });
-                } else {
-                    if (req.body.password) {
-                        foundObject.password = req.body.password;
-                    }
-                    foundObject.save(function (err, updatedObject) {
-                        if (err) {
-                            console.log(err);
-                            res.json({
-                                success: false
-                            });
-                            res.status(500).send();
-                        } else {
-                            res.json({
-                                success: true
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    }
 }

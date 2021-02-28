@@ -5,7 +5,8 @@ const {
     saveOtp,
     checkOtp,
     updateInfo,
-    checkPassword
+    checkPassword,
+    updatePassword,
 } = require('../utils/helper')
 
 const user = require('../models/user')
@@ -87,10 +88,10 @@ module.exports = {
         try {
             console.log("reset password", req.body)
             const {
-                id,
+                userID,
                 password
             } = req.body
-            const result = await updatePassword(id, password)
+            const result = await updatePassword(userID, password)
             if (result) {
                 return res.status(201).json({
                     success: true
