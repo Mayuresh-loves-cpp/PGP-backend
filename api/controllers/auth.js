@@ -7,6 +7,7 @@ const {
     updateInfo,
     checkPassword,
     updatePassword,
+    updateEmail
 } = require('../utils/helper')
 
 const user = require('../models/user')
@@ -17,7 +18,8 @@ const {
 } = require('mongoose')
 
 const {
-    passwordSchema,
+    passwordUpdateSchema,
+    emailUpdateSchema,
 } = require('../utils/validationSchema')
 
 module.exports = {
@@ -147,24 +149,38 @@ module.exports = {
             }).send()
         }
     },
-    checkPassword: async (req, res, next) => {
+    upadtePassword: async (req, res, next) => {
         try {
             const {
                 userID,
-                password
+                oldPassword,
+                newPassword
             } = req.body
-            const result = await checkPassword(userID, password)
+            const validationResult = await passwordUpdateSchema.validateAsync(req.body)
+            console.log(validationResult)
+            const result = await checkPassword(userID, oldPassword)
             if (result) {
                 console.log("user:", userID, "with given password exist in database")
-                res.status(200).json({
-                    success: true,
-                    message: "user with given id and password exist"
-                })
+                console.log("updating password")
+                const updateResult = await updatePassword(userID, newPassword)
+                if (updateResult) {
+                    console.log("password updated sucessfully for user:", userID)
+                    res.status(200).json({
+                        success: true,
+                        message: "password updated sucessfully"
+                    })
+                } else {
+                    console.log(" unable to update password for user:", userID)
+                    res.status(500).json({
+                        success: false,
+                        message: "unable to update password for user"
+                    })
+                }
             } else {
-                console.log("user:", userID, "with given password doesn't exist in database")
-                res.status(200).json({
+                console.log("user:", userID, "with given credntials doesn't exist in database")
+                res.status(500).json({
                     success: false,
-                    message: "user with given id and password doesn't exist"
+                    message: "user with given credntials doesn't exist in database"
                 })
             }
         } catch (error) {
@@ -175,5 +191,47 @@ module.exports = {
             })
         }
     },
+    updateEmail: async (req, res, next) => {
+        try {
+            const {
+                userID,
+                newEmail,
+                password
+            } = req.body
+            const validationResult = await emailUpdateSchema.validateAsync(req.body)
+            console.log(validationResult)
+            const result = await checkPassword(userID, password)
+            if (result) {
+                console.log("user:", userID, "with given password exist in database")
+                console.log("updating email")
+                const updateResult = await updateEmail(userID, newEmail)
+                if (updateResult) {
+                    console.log("email id updated sucessfully for user:", userID)
+                    res.status(200).json({
+                        success: true,
+                        message: "email id updated sucessfully"
+                    })
+                } else {
+                    console.log(" unable to update email id for user:", userID)
+                    res.status(500).json({
+                        success: false,
+                        message: "unable to update email id for user"
+                    })
+                }
+            } else {
+                console.log("user:", userID, "with given credntials doesn't exist in database")
+                res.status(500).json({
+                    success: false,
+                    message: "user with given credntials doesn't exist in database"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(404).json({
+                success: false,
+                message: "incorrect information"
+            })
+        }
+    }
     // add new api here
 }

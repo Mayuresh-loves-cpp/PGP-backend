@@ -63,4 +63,13 @@ module.exports = {
             return null
         }
     },
+    updateEmail: async (userID, emailID) => {
+        if(User.findOne({_id: userID})){
+           const result = await User.findByIdAndUpdate(userID, {userEmailId: emailID})
+           return result
+        }
+        else{
+            return null
+        }
+    },
 }

@@ -21,8 +21,15 @@ const questionSchema = Joi.object({
     options: Joi.array().required(),
 })
 
-const passwordSchema = Joi.object({
-    id: Joi.required(),
+const passwordUpdateSchema = Joi.object({
+    userID: Joi.required(),
+    oldPassword: Joi.string().min(6).required(),
+    newPassword: Joi.string().min(6).required(),
+})
+
+const emailUpdateSchema = Joi.object({
+    userID: Joi.required(),
+    newEmail: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
 })
 
@@ -30,5 +37,6 @@ module.exports = {
     loginSchema,
     registerSchema,
     questionSchema,
-    passwordSchema,
+    passwordUpdateSchema,
+    emailUpdateSchema,
 }
