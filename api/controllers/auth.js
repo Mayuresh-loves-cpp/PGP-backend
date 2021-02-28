@@ -162,6 +162,13 @@ module.exports = {
             if (result) {
                 console.log("user:", userID, "with given password exist in database")
                 console.log("updating password")
+                if(oldPassword == newPassword){
+                    console.log("same old password and new password recived")
+                    res.status(500).json({
+                        success: false,
+                        message: "old password and new password must be different"
+                    })
+                }
                 const updateResult = await updatePassword(userID, newPassword)
                 if (updateResult) {
                     console.log("password updated sucessfully for user:", userID)
@@ -177,10 +184,10 @@ module.exports = {
                     })
                 }
             } else {
-                console.log("user:", userID, "with given credntials doesn't exist in database")
+                console.log("user:", userID, "with given password doesn't exist in database")
                 res.status(500).json({
                     success: false,
-                    message: "user with given credntials doesn't exist in database"
+                    message: "user with given password doesn't exist in database"
                 })
             }
         } catch (error) {
