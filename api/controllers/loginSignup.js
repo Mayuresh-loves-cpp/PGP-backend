@@ -48,7 +48,7 @@ module.exports = {
             });
             user.save().then(result => {
                     console.log(result);
-                    res.json({
+                    res.status(200).json({
                         success: true,
                         userID: result._id
                     });
@@ -56,10 +56,10 @@ module.exports = {
                 })
                 .catch(error => {
                     console.log(error);
-                    res.json({
+                    res.status(409).json({
                         success: false,
                         message: "user already exist!",
-                    });
+                    }).send();
                 });
 
         } catch (error) {
