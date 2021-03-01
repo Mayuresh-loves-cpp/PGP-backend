@@ -15,6 +15,7 @@ const registerSchema = Joi.object({
 const questionSchema = Joi.object({
     surveyType: Joi.string().equal('daily', 'weekly', 'monthly').required(),
     active: Joi.boolean().required(),
+    required: Joi.boolean().required(),
     question: Joi.string().required(),
     questionNumber: Joi.string().required(),
     type: Joi.string().equal('short answer', 'long answer', 'radio button', 'check box', 'option table').required(),
