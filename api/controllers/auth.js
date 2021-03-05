@@ -214,18 +214,32 @@ module.exports = {
                 console.log("user:", userID, "with given password exist in database")
                 console.log("updating email")
                 const updateResult = await updateEmail(userID, newEmail)
-                if (updateResult) {
+                if (updateResult == "same emailID") {
+                    console.log("same old emailID and new emailID recived")
+                    res.status(409).json({
+                        success: false,
+                        message: "same old emailID and new emailID recived"
+                    }).send()
+                }
+                else if (updateResult == "user with given emailID exist in DB") {
+                    console.log("user with given emailID exist in DB")
+                    res.status(409).json({
+                        success: false,
+                        message: "user with given emailID already exist"
+                    }).send()
+                }
+                else if (updateResult) {
                     console.log("email id updated sucessfully for user:", userID)
                     res.status(200).json({
                         success: true,
                         message: "email id updated sucessfully"
-                    })
+                    }).send()
                 } else {
-                    console.log(" unable to update email id for user:", userID)
+                    console.log("unable to update email id for user:", userID)
                     res.status(500).json({
                         success: false,
                         message: "unable to update email id for user"
-                    })
+                    }).send()
                 }
             } else {
                 console.log("user:", userID, "with given credntials doesn't exist in database")

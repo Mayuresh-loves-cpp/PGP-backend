@@ -64,7 +64,15 @@ module.exports = {
         }
     },
     updateEmail: async (userID, emailID) => {
-        if(User.findOne({_id: userID})){
+        const doc = await User.findOne({_id: userID});
+        const doc1 = await User.findOne({userEmailId: emailID}) 
+        if(doc.userEmailId == emailID) {
+            return "same emailID"
+        }
+        else if(doc1) {
+            return "user with given emailID exist in DB"
+        }
+        else if(doc){
            const result = await User.findByIdAndUpdate(userID, {userEmailId: emailID})
            return result
         }
