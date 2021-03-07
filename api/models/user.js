@@ -1,7 +1,17 @@
+/*************************************************
+ * 
+ * database schema for user
+ * 
+ *************************************************/
+
+// inporting mongoose
 const mongoose = require("mongoose");
+
+// initializing salt for hashing
 // bcrypt = require('bcrypt'),
 //     SALT_WORK_FACTOR = 10;
 
+// user schema structure
 const userSchema = mongoose.Schema({
     userEmailId: {
         type: String,
@@ -13,6 +23,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    admin: {
+        type: Boolean,
+        required: true,
+    },
     firstName: {
         type: String,
         required: true,
@@ -20,10 +34,13 @@ const userSchema = mongoose.Schema({
     lastName: {
         type: String,
         required: true,
-    }
+    },
 });
 
+// exporting user model
 module.exports = mongoose.model("users", userSchema)
+
+// hashing password before saving in database
 // userSchema.pre('save', function (next) {
 //     const user = this;
 

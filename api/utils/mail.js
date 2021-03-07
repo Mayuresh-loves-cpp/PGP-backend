@@ -1,5 +1,9 @@
+// otp mailing helper functions
+
+// imports
 const nodemailer = require('nodemailer');
 
+// helper functions
 const sendMail = async (email, otp) => {
     try {
         const transporter = nodemailer.createTransport({

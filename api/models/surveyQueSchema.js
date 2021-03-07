@@ -1,5 +1,13 @@
+/*************************************************
+ * 
+ * database schema for survey questions
+ * 
+ *************************************************/
+
+// importing mongoose
 const mongoose = require("mongoose");
 
+// survey question schema structure
 const queSchema = mongoose.Schema({
     surveyType: String,
     active: Boolean,
@@ -12,4 +20,5 @@ const queSchema = mongoose.Schema({
     timestamps: true
 });
 
+// exporting schema
 module.exports = mongoose.model('Survey Questions', queSchema);

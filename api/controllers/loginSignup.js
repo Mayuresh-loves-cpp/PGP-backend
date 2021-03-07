@@ -1,9 +1,19 @@
+/*************************************************
+ * 
+ * operational apis for login and signup procedure
+ * 
+ *************************************************/
+
+// importing user schema
 const userSchema = require("../models/user")
+
+// importing validation schemas
 const {
     loginSchema,
     registerSchema
 } = require('../utils/validationSchema')
 
+// exporting apis and their code
 module.exports = {
     login: async (req, res, next) => {
         try {

@@ -1,3 +1,10 @@
+/*************************************************
+ * 
+ * initialization code for mongoDB
+ * 
+ *************************************************/
+
+// importing mongoose
 const mongoose = require("mongoose"); // database URIs
 
 // connecting to database
@@ -13,6 +20,7 @@ mongoose
         console.log(err.message)
     })
 
+// on connection and disconnection operations
 mongoose.connection.on("connected", () => {
     console.log("database connected!")
 })

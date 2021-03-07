@@ -1,4 +1,16 @@
+/*************************************************
+ * 
+ * operational apis for authentication
+ * 
+ *************************************************/
+// importing packages
 const sendMail = require('../utils/mail')
+const {
+    mongo,
+    Mongoose
+} = require('mongoose')
+
+// importing helper functions
 const {
     generateOtp,
     checkUserExist,
@@ -10,18 +22,16 @@ const {
     updateEmail
 } = require('../utils/helper')
 
+// importing user model
 const user = require('../models/user')
 
-const {
-    mongo,
-    Mongoose
-} = require('mongoose')
-
+// importing validation schemas
 const {
     passwordUpdateSchema,
     emailUpdateSchema,
 } = require('../utils/validationSchema')
 
+// exporting apis and their code
 module.exports = {
     sendOtp: async (req, res, next) => {
         try {
@@ -220,15 +230,13 @@ module.exports = {
                         success: false,
                         message: "same old emailID and new emailID recived"
                     }).send()
-                }
-                else if (updateResult == "user with given emailID exist in DB") {
+                } else if (updateResult == "user with given emailID exist in DB") {
                     console.log("user with given emailID exist in DB")
                     res.status(409).json({
                         success: false,
                         message: "user with given emailID already exist"
                     }).send()
-                }
-                else if (updateResult) {
+                } else if (updateResult) {
                     console.log("email id updated sucessfully for user:", userID)
                     res.status(200).json({
                         success: true,

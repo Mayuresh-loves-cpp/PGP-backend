@@ -1,13 +1,14 @@
+// imports
 const User = require("../models/user");
 const Otp = require("../models/otpSchema");
 var mongoose = require('mongoose');
 const {
     findByIdAndUpdate
 } = require("../models/user");
-const user = require("../models/user");
 
 mongoose.set('useFindAndModify', false)
 
+// exporting helper functions
 module.exports = {
     generateOtp: () => {
         const otp = Math.floor(1000 + Math.random() * 9000);
@@ -80,4 +81,5 @@ module.exports = {
             return null
         }
     },
+    // add new helper function here
 }

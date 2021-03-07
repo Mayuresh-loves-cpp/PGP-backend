@@ -1,9 +1,18 @@
+/*************************************************
+ * 
+ * helper functions for survey operational apis
+ * 
+ *************************************************/
+
+// importing schemas
 const Question = require("../models/surveyQueSchema")
 const Response = require("../models/surveyResponseSchema")
 
+// imports
 var mongoose = require('mongoose');
 const survey = require("../controllers/survey");
 
+// exporting helper functions
 module.exports = {
     saveq: async (data) => {
         const result = await Question.create(data)
@@ -123,5 +132,6 @@ module.exports = {
             userID: uID,
         })
         return result
-    }
+    },
+    // add new helper here
 }

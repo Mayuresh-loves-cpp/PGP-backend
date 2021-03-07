@@ -4,9 +4,6 @@
  * 
  *************************************************/
 
-// importing database
-// const questionSchema = require("../models/surveyQueSchema");
-
 // importing survey helper functions
 const {
     saveq,
@@ -28,6 +25,7 @@ const user = require("../models/user");
 const {
     questionSchema,
 } = require("../utils/validationSchema")
+
 // api routes
 module.exports = {
     saveQuestion: async (req, res, next) => {

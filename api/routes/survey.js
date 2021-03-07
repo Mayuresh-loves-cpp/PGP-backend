@@ -1,6 +1,14 @@
+/*************************************************
+ * 
+ * api routes for survey opeartions
+ * 
+ *************************************************/
+
+// imports
 const express = require("express");
 const router = express.Router();
 
+// importing controller
 const surveyController = require("../controllers/survey")
 
 // survey routes
