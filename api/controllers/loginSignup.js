@@ -54,7 +54,8 @@ module.exports = {
                 userEmailId: result.userEmailId,
                 password: result.password,
                 firstName: result.firstName,
-                lastName: result.lastName
+                lastName: result.lastName,
+                admin: result.admin,
             });
             user.save().then(result => {
                     console.log(result);
