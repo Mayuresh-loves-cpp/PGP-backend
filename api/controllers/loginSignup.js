@@ -55,7 +55,7 @@ module.exports = {
                 password: result.password,
                 firstName: result.firstName,
                 lastName: result.lastName,
-                admin: result.admin,
+                admin: false,
             });
             user.save().then(result => {
                     console.log(result);

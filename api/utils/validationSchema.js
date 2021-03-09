@@ -19,7 +19,7 @@ const registerSchema = Joi.object({
     password: Joi.string().min(6).required(),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    admin: Joi.boolean().required(),
+    // admin: Joi.boolean().required(),
 })
 
 // survey question validation schema
