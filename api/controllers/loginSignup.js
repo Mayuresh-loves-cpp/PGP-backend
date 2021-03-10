@@ -23,6 +23,7 @@ module.exports = {
             const data = JSON.parse(JSON.stringify(doc));
             if (doc != null) {
                 delete data.password;
+                delete data.admin;
                 console.log("login successful", data)
                 res.json({
                     success: true,

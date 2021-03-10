@@ -11,6 +11,7 @@ const Joi = require('@hapi/joi')
 const loginSchema = Joi.object({
     userEmailId: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
+    admin: Joi.boolean().required(),
 })
 
 // register validation schema
