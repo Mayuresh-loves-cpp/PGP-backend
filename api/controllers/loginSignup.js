@@ -32,7 +32,7 @@ module.exports = {
                 });
             } else {
                 console.log("user not found", doc)
-                res.json({
+                res.status(404).json({
                     success: false,
                     data: doc,
                     message: "incorrect email id or password",
@@ -40,11 +40,19 @@ module.exports = {
             }
         } catch (error) {
             console.log(error)
-            res.status(400).json({
-                success: false,
-                data: null,
-                message: "incorrect data format"
-            }).send()
+            if (error.isJoi === true) {
+                res.status(422).json({
+                    success: false,
+                    data: null,
+                    message: "incorrect data format"
+                }).send();
+            } else {
+                res.status(400).json({
+                    success: false,
+                    data: null,
+                    message: "incorrect data format"
+                }).send()
+            }
         }
     },
     register: async (req, res, next) => {

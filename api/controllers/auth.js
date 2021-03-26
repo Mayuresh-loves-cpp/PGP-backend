@@ -144,7 +144,7 @@ module.exports = {
                 }
             } else {
                 console.log('user:', userID, 'doesn\'t exist')
-                res.status(500).json({
+                res.status(404).json({
                     success: false,
                     message: "user does not exist"
                 }).send()
@@ -153,7 +153,7 @@ module.exports = {
         } catch (error) {
             console.log(error)
             console.log("recived wrong information!")
-            res.status(404).json({
+            res.status(400).json({
                 success: false,
                 message: 'recived wrong information'
             }).send()
@@ -197,14 +197,14 @@ module.exports = {
 
             } else {
                 console.log("user:", userID, "with given password doesn't exist in database")
-                res.status(500).json({
+                res.status(404).json({
                     success: false,
                     message: "user with given password doesn't exist in database"
                 }).send()
             }
         } catch (error) {
             console.log(error)
-            res.status(404).json({
+            res.status(400).json({
                 success: false,
                 message: "incorrect information"
             }).send()
@@ -251,14 +251,14 @@ module.exports = {
                 }
             } else {
                 console.log("user:", userID, "with given credntials doesn't exist in database")
-                res.status(500).json({
+                res.status(404).json({
                     success: false,
                     message: "user with given credntials doesn't exist in database"
                 })
             }
         } catch (error) {
             console.log(error)
-            res.status(404).json({
+            res.status(400).json({
                 success: false,
                 message: "incorrect information"
             })

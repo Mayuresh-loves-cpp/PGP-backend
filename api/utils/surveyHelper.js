@@ -45,7 +45,7 @@ module.exports = {
     sendSurvey: async (survey, res) => {
         if (survey != null || survey != undefined) {
             const data = JSON.parse(JSON.stringify(survey));
-            res.json({
+            res.status(200).json({
                 success: true,
                 data: data,
             });
@@ -54,7 +54,7 @@ module.exports = {
                 success: false,
                 data: null
             });
-            res.status(500).send();
+            res.status(404).send();
         }
     },
     isSurveyExist: async (uID, survey) => {

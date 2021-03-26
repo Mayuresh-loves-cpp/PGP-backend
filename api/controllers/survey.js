@@ -123,11 +123,10 @@ module.exports = {
             sendSurvey(doc, res)
         } catch (error) {
             console.log(error)
-            res.json({
+            res.status(400).json({
                 success: false,
                 data: null
-            })
-            res.status(404).send();
+            }).send();
         }
     },
     getDailySurvey: async (req, res, next) => {
@@ -185,19 +184,17 @@ module.exports = {
             const status = await saveres(doc);
             console.log(status);
             if (status) {
-                res.json({
+                res.status(200).json({
                     success: true,
                     responseID: status._id,
                     createdAt: status.createdAt,
                     updatedAt: status.updatedAt,
-                })
-                res.status(200).send()
+                }).send()
             } else {
-                res.json({
+                res.status(500).json({
                     success: false,
                     responseID: null,
-                })
-                res.status(500).send()
+                }).send()
             }
         } catch (error) {
             res.json({
@@ -264,36 +261,18 @@ module.exports = {
                     })
                 }
             } else {
-                res.status(500).json({
+                res.status(404).json({
                     success: false,
                     response: "this user doesn't exist in database"
                 })
             }
-            // if (req.body.dailySurveyResponseID != null) {
-            //     const dailyStatus = await isSurveyExist2(/*req.body.dailySurveyResponseID,*/req.body.userID, "daily")
-            //     result.push(dailyStatus)
-            // } else {
-            //     // result.push(null)
-            // }
-            // if (req.body.weeklySurveyResponseID != null) {
-            //     const weeklyStatus = await isSurveyExist2(/*req.body.weeklySurveyResponseID,*/ req.body.userID, "weekly")
-            //     result.push(weeklyStatus)
-            // } else {
-            //     // result.push(null)
-            // }
-            // if (req.body.monthlySurveyResponseID != null) {
-            //     const monthlyStatus = await isSurveyExist2(/*req.body.monthlySurveyResponseID,*/ req.body.userID, "monthly")
-            //     result.push(monthlyStatus)
-            // } else {
-            //     // result.push(null)
-            // }
             console.log("displaying result at end: ", result);
         } catch (error) {
             console.log(error)
             res.json({
                 success: false,
             })
-            res.status(404).send()
+            res.status(400).send()
         }
     },
     // add new route api here
