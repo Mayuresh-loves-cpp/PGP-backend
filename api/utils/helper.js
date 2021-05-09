@@ -37,7 +37,9 @@ module.exports = {
         return result
     },
     checkExistByID: async (uID) => {
-        const result = await User.findOne({_id: uID})
+        const result = await User.findOne({
+            _id: uID
+        })
         console.log("checking if user exist!")
         console.log("result after finding user in account's db: ", result)
         return result
@@ -47,37 +49,47 @@ module.exports = {
         return result
     },
     checkPassword: async (userID, password) => {
-        if(User.findOne({_id: userID})){
-           const result = await User.findOne({_id: userID, password: password})
-           return result
-        }
-        else{
+        const doc = await User.findById(userID)
+        if (doc) {
+            console.log('check password user: ', doc)
+            const areSame = await doc.validPassword(password, doc.password)
+            console.log('in check password areSame: ', areSame)
+            if (areSame) {
+                return doc
+            } else {
+                return null
+            }
+        } else {
             return null
         }
     },
     updatePassword: async (userID, password) => {
-        if(User.findOne({_id: userID})){
-           const result = await User.findByIdAndUpdate(userID, {password: password})
-           return result
-        }
-        else{
+        const doc = await User.findById(userID)
+        if (doc) {
+            doc.password = password
+            const result = await doc.save()
+            return result
+        } else {
             return null
         }
     },
     updateEmail: async (userID, emailID) => {
-        const doc = await User.findOne({_id: userID});
-        const doc1 = await User.findOne({userEmailId: emailID}) 
-        if(doc.userEmailId == emailID) {
+        const doc = await User.findOne({
+            _id: userID
+        });
+        const doc1 = await User.findOne({
+            userEmailId: emailID
+        })
+        if (doc.userEmailId == emailID) {
             return "same emailID"
-        }
-        else if(doc1) {
+        } else if (doc1) {
             return "user with given emailID exist in DB"
-        }
-        else if(doc){
-           const result = await User.findByIdAndUpdate(userID, {userEmailId: emailID})
-           return result
-        }
-        else{
+        } else if (doc) {
+            const result = await User.findByIdAndUpdate(userID, {
+                userEmailId: emailID
+            })
+            return result
+        } else {
             return null
         }
     },

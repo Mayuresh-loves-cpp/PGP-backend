@@ -68,9 +68,6 @@ module.exports = {
             userID: uID,
             surveyType: survey,
         }).exec()
-        // .sort({
-        //     surveyDate: -1
-        // })
         console.log("type of response " + typeof result)
         result = result.sort((a, b) => {
             return b.createdAt - a.createdAt
@@ -78,7 +75,6 @@ module.exports = {
         result = result[0]
         console.log("result going to be used for processing: ", result)
         if (result == undefined) {
-            console.log("sending null from upper if condition")
             return {
                 surveyType: survey
             }
@@ -133,5 +129,5 @@ module.exports = {
         })
         return result
     },
-    // add new helper here
+    // add new helper function here
 }

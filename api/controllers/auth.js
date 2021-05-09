@@ -169,10 +169,12 @@ module.exports = {
             const validationResult = await passwordUpdateSchema.validateAsync(req.body)
             console.log("validation result: ", validationResult)
             const result = await checkPassword(userID, oldPassword)
+            console.log('user with old password exist: ', result)
             if (result) {
                 console.log("user:", userID, "with given password exist in database")
                 console.log("updating password")
-                if (oldPassword == newPassword) {
+                const isSame = await checkPassword(userID, newPassword)
+                if (isSame) {
                     console.log("same old password and new password recived")
                     res.status(409).json({
                         success: false,

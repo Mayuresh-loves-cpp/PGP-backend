@@ -19,17 +19,29 @@ module.exports = {
         try {
             const result = await loginSchema.validateAsync(req.body)
             console.log("validation result: -\n", result)
-            const doc = await userSchema.findOne(result);
-            const data = JSON.parse(JSON.stringify(doc));
+            const doc = await userSchema.findOne({
+                userEmailId: result.userEmailId
+            });
             if (doc != null) {
-                delete data.password;
-                delete data.admin;
-                console.log("login successful", data)
-                res.json({
-                    success: true,
-                    data: data,
-                    message: "login successful",
-                });
+                const areSame = await doc.validPassword(result.password, doc.password);
+                if (areSame) {
+                    const data = JSON.parse(JSON.stringify(doc));
+                    delete data.password;
+                    delete data.admin;
+                    console.log("login successful", data)
+                    res.json({
+                        success: true,
+                        data: data,
+                        message: "login successful",
+                    });
+                } else {
+                    console.log("incorrect login credientials")
+                    res.json({
+                        success: false,
+                        data: null,
+                        message: "login failed",
+                    });
+                }
             } else {
                 console.log("user not found", doc)
                 res.status(404).json({
@@ -117,4 +129,5 @@ module.exports = {
             });
         }
     },
+    // add new api here
 }
