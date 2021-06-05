@@ -13,6 +13,7 @@ const {
     sendSurvey,
     isSurveyExist,
     isUserExist,
+    shuffleOptions,
 } = require("../utils/surveyHelper")
 
 // importing other helper functions
@@ -119,8 +120,22 @@ module.exports = {
     },
     getSurvey: async (req, res, next) => {
         try {
-            const doc = await getSurvey(req.body.surveyType)
-            sendSurvey(doc, res)
+            if (req.body.surveyType == 'daily' || req.body.surveyType == 'weekly' || req.body.surveyType == 'monthly'   ) {
+                var doc = await getSurvey(req.body.surveyType)
+                if (req.body.surveyType == 'daily') {
+                    doc = shuffleOptions(doc, [1, 2])
+                }
+                if (req.body.surveyType == 'weekly') {
+                    doc = shuffleOptions(doc, [1, 2])
+                }
+                sendSurvey(doc, res)
+            } else {
+                console.log('unknow surveytype requested!')
+                res.status(403).json({
+                    success: false,
+                    data: null
+                }).send();
+            }
         } catch (error) {
             console.log(error)
             res.status(400).json({
@@ -133,7 +148,6 @@ module.exports = {
         try {
             const doc = await getSurvey("daily")
             sendSurvey(doc, res)
-
         } catch (error) {
             console.log(error)
             res.json({
@@ -147,7 +161,6 @@ module.exports = {
         try {
             const doc = await getSurvey("weekly")
             sendSurvey(doc, res)
-
         } catch (error) {
             console.log(error)
             res.json({
@@ -161,7 +174,6 @@ module.exports = {
         try {
             const doc = await getSurvey("monthly")
             sendSurvey(doc, res)
-
         } catch (error) {
             console.log(error)
             res.json({

@@ -12,6 +12,19 @@ const Response = require("../models/surveyResponseSchema")
 var mongoose = require('mongoose');
 const survey = require("../controllers/survey");
 
+////////////////////////////////////////////////////////////////////////
+// required functions
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1))
+        var temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
+    }
+    return array
+}
+////////////////////////////////////////////////////////////////////////
+
 // exporting helper functions
 module.exports = {
     saveq: async (data) => {
@@ -129,5 +142,15 @@ module.exports = {
         })
         return result
     },
+    shuffleOptions: (questions, indicesToExclude) => {
+        for (var i = 0; i < questions.length; i++) {
+            if (!(i in indicesToExclude)) {
+                if (questions[i].options.length) {
+                    questions[i].options = shuffleArray(questions[i].options)
+                }
+            }
+        }
+        return questions
+    }
     // add new helper function here
 }
