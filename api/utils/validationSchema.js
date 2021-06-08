@@ -23,6 +23,13 @@ const registerSchema = Joi.object({
     // admin: Joi.boolean().required(),
 })
 
+// additional information schema
+const additionalUserInfoSchema = Joi.object({
+    userID: Joi.required(),
+    ageGroupLevel: Joi.number().equal(0, 1, 2, 3, 4).required(),
+    profession: Joi.string().required(),
+})
+
 // survey question validation schema
 const questionSchema = Joi.object({
     surveyType: Joi.string().equal('daily', 'weekly', 'monthly').required(),
@@ -52,6 +59,7 @@ const emailUpdateSchema = Joi.object({
 module.exports = {
     loginSchema,
     registerSchema,
+    additionalUserInfoSchema,
     questionSchema,
     passwordUpdateSchema,
     emailUpdateSchema,

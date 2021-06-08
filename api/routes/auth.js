@@ -21,6 +21,7 @@ router.patch('/password', authController.newPassword)
 // login & signup route
 router.post('/login', userFunction.login)
 router.post('/register', userFunction.register)
+router.post('/additionalInfo', userFunction.additionalInfo)
 // reset passsword route
 router.post('/resetPasswordEmail', userFunction.resetPasswordEmail)
 // routes for updating data

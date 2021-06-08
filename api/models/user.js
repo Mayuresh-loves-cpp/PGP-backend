@@ -5,6 +5,7 @@
  *************************************************/
 
 // inporting mongoose
+const { number } = require("@hapi/joi");
 const mongoose = require("mongoose");
 
 // initializing salt for hashing
@@ -32,6 +33,14 @@ const userSchema = mongoose.Schema({
         required: true,
     },
     lastName: {
+        type: String,
+        required: true,
+    },
+    ageGroupLevel: {
+        type: Number,
+        required: true,
+    },
+    profession: {
         type: String,
         required: true,
     },
@@ -69,7 +78,6 @@ userSchema.methods.validPassword = async (password, hashed) => {
     console.log("returning ", result)
     return result
 };
-
 
 const User = mongoose.model("users", userSchema)
 

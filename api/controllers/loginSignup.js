@@ -5,12 +5,21 @@
  *************************************************/
 
 // importing user schema
+const {
+    number
+} = require("@hapi/joi")
 const userSchema = require("../models/user")
+
+// importing helper functions
+const {
+    addAdditionalUserInfo,
+} = require('../utils/helper')
 
 // importing validation schemas
 const {
     loginSchema,
-    registerSchema
+    registerSchema,
+    additionalUserInfoSchema,
 } = require('../utils/validationSchema')
 
 // exporting apis and their code
@@ -28,6 +37,11 @@ module.exports = {
                     const data = JSON.parse(JSON.stringify(doc));
                     delete data.password;
                     delete data.admin;
+                    if (data.ageGroupLevel == 0 && data.profession == 'no profession') {
+                        data.additionalInfoPending = true
+                    } else {
+                        data.additionalInfoPending = false
+                    }
                     console.log("login successful", data)
                     res.json({
                         success: true,
@@ -76,6 +90,8 @@ module.exports = {
                 password: result.password,
                 firstName: result.firstName,
                 lastName: result.lastName,
+                ageGroupLevel: 0,
+                profession: 'no profession',
                 admin: false,
             });
             user.save().then(result => {
@@ -93,7 +109,6 @@ module.exports = {
                         message: "user already exist!",
                     }).send();
                 });
-
         } catch (error) {
             console.log(error);
             if (error.isJoi === true) {
@@ -110,7 +125,6 @@ module.exports = {
     resetPasswordEmail: async (req, res, next) => {
         const doc = await userSchema.findOne(req.body);
         const data = JSON.parse(JSON.stringify(doc));
-
         if (doc != null) {
             delete data["userEmailId"];
             delete data["password"];
@@ -123,10 +137,28 @@ module.exports = {
             });
         } else {
             console.log("user not found!")
-            res.json({
+            res.status(404).json({
                 success: false,
                 data: doc
             });
+        }
+    },
+    additionalInfo: async (req, res, next) => {
+        try {
+            const validationResult = await additionalUserInfoSchema.validateAsync(req.body)
+            console.log("validation result: -\n", validationResult)
+            await addAdditionalUserInfo(validationResult, res)
+        } catch (error) {
+            console.log(error)
+            if (error.isJoi === true) {
+                res.status(422).json({
+                    success: false
+                }).send();
+            } else {
+                res.status(400).json({
+                    success: false
+                }).send();
+            }
         }
     },
     // add new api here

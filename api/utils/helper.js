@@ -1,10 +1,10 @@
 // imports
-const User = require("../models/user");
-const Otp = require("../models/otpSchema");
-var mongoose = require('mongoose');
+const User = require("../models/user")
+const Otp = require("../models/otpSchema")
+var mongoose = require('mongoose')
 const {
     findByIdAndUpdate
-} = require("../models/user");
+} = require("../models/user")
 
 mongoose.set('useFindAndModify', false)
 
@@ -91,6 +91,34 @@ module.exports = {
             return result
         } else {
             return null
+        }
+    },
+    addAdditionalUserInfo: async (data, res) => {
+        const found = User.findById(data.userID)
+        // console.log(result)
+        if (found) {
+            const result = await User.findByIdAndUpdate(data.userID, {
+                ageGroupLevel: data.ageGroupLevel,
+                profession: data.profession,
+            })
+            if (result) {
+                console.log('age group', result.ageGroupLevel)
+                console.log('profession', result.profession)
+                console.log('additional information saved!')
+                res.status(200).json({
+                    success: true,
+                }).send();
+            } else {
+                console.log('unable to save additional information!')
+                res.status(500).json({
+                    success: false,
+                }).send();
+            }
+        } else {
+            console.log('user', data.userID, 'not found!')
+            res.status(404).json({
+                success: false
+            }).send();
         }
     },
     // add new helper function here
