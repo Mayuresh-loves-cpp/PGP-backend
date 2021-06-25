@@ -120,7 +120,7 @@ module.exports = {
     },
     getSurvey: async (req, res, next) => {
         try {
-            if (req.body.surveyType == 'daily' || req.body.surveyType == 'weekly' || req.body.surveyType == 'monthly'   ) {
+            if (req.body.surveyType == 'daily' || req.body.surveyType == 'weekly' || req.body.surveyType == 'monthly') {
                 var doc = await getSurvey(req.body.surveyType)
                 if (req.body.surveyType == 'daily') {
                     doc = shuffleOptions(doc, [1, 2])
@@ -286,6 +286,9 @@ module.exports = {
             })
             res.status(400).send()
         }
+    },
+    addOptionSet: async (req, res, next) => {
+        
     },
     // add new route api here
 }

@@ -100,6 +100,7 @@ module.exports = {
             const result = await User.findByIdAndUpdate(data.userID, {
                 ageGroupLevel: data.ageGroupLevel,
                 profession: data.profession,
+                occupation: data.occupation,
             })
             if (result) {
                 console.log('age group', result.ageGroupLevel)

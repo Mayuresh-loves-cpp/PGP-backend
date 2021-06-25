@@ -38,11 +38,15 @@ const userSchema = mongoose.Schema({
     },
     ageGroupLevel: {
         type: Number,
-        required: true,
+        // required: true,
     },
     profession: {
         type: String,
-        required: true,
+        // required: true,
+    },
+    occupation: {
+        type: String,
+        // required: true,
     },
 });
 
@@ -73,7 +77,7 @@ userSchema.pre('save', function (next) {
 
 userSchema.methods.validPassword = async (password, hashed) => {
     console.log("checking password")
-    console.log('passwords to be compared: ', password, hashed)
+    // console.log('passwords to be compared: ', password, hashed)
     const result = await bcrypt.compare(password, hashed)
     console.log("returning ", result)
     return result

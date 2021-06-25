@@ -15,7 +15,7 @@ const queSchema = mongoose.Schema({
     question: String,
     questionNumber: String,
     type: String, // short answer, long answer, radio button, check box, option table
-    options: Array
+    options: Array,
 }, {
     timestamps: true
 });

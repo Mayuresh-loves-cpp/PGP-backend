@@ -37,7 +37,7 @@ module.exports = {
                     const data = JSON.parse(JSON.stringify(doc));
                     delete data.password;
                     delete data.admin;
-                    if (data.ageGroupLevel == 0 && data.profession == 'no profession') {
+                    if (!(data.ageGroupLevel && data.profession)) {
                         data.additionalInfoPending = true
                     } else {
                         data.additionalInfoPending = false
@@ -90,8 +90,8 @@ module.exports = {
                 password: result.password,
                 firstName: result.firstName,
                 lastName: result.lastName,
-                ageGroupLevel: 0,
-                profession: 'no profession',
+                // ageGroupLevel: 0,
+                // profession: 'no profession',
                 admin: false,
             });
             user.save().then(result => {
