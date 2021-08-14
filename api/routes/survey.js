@@ -16,5 +16,6 @@ router.post('/getSurvey', surveyController.getSurvey)
 router.post('/saveResponse', surveyController.saveResponse)
 router.post('/surveyStatus', surveyController.surveyStatus)
 router.post('/saveQuestion', surveyController.saveQuestion)
+router.post('/addOptionSet', surveyController.addOptionSet)
 
 module.exports = router

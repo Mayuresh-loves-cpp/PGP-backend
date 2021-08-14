@@ -14,6 +14,7 @@ const {
     isSurveyExist,
     isUserExist,
     shuffleOptions,
+    saveOptionSet,
 } = require("../utils/surveyHelper")
 
 // importing other helper functions
@@ -288,7 +289,30 @@ module.exports = {
         }
     },
     addOptionSet: async (req, res, next) => {
-        
+        try {
+            if (req.body) {
+                const result = await saveOptionSet(req.body)
+                if (result) {
+                    console.log("new option set saved successfully!")
+                    res.json({
+                        success: true,
+                    })
+                    res.status(200).send()
+                } else {
+                    console.log("unable to save option set!")
+                    res.json({
+                        success: false,
+                    })
+                    res.status(400).send()
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            res.json({
+                success: false,
+            })
+            res.status(400).send()
+        }
     },
     // add new route api here
 }

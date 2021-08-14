@@ -7,6 +7,7 @@
 // importing schemas
 const Question = require("../models/surveyQueSchema")
 const Response = require("../models/surveyResponseSchema")
+const OptionSet = require("../models/optionsSchema")
 
 // imports
 var mongoose = require('mongoose');
@@ -151,6 +152,9 @@ module.exports = {
             }
         }
         return questions
-    }
+    },
+    saveOptionSet: async (optionSet) => {
+        return await OptionSet.create(optionSet)
+    },
     // add new helper function here
 }
