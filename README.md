@@ -13,7 +13,7 @@ Use follwing command to start server.
 npm start
 ```
 
-Use follwing command to server in development mode
+Use follwing command to run server in development mode.
 ```sh
 npm run dev
 ```
