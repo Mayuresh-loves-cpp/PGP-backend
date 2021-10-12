@@ -6,6 +6,7 @@
 
 // importing mongoose
 const mongoose = require("mongoose"); // database URIs
+require('dotenv').config();
 
 // connecting to database
 mongoose

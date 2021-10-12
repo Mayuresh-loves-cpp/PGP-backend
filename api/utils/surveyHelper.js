@@ -156,5 +156,17 @@ module.exports = {
     saveOptionSet: async (optionSet) => {
         return await OptionSet.create(optionSet)
     },
+    getFirst2Questions: async () => {
+        const doc = await Question.find({
+            surveyType: "daily",
+            active: true
+        })
+        doc.sort((a, b) => {
+            return  a.questionNumber - b.questionNumber
+        })
+        doc = [doc[0], doc[1]]
+        console.log('1st 2 questions going to be returned are: ', doc)
+        return doc
+    },
     // add new helper function here
 }

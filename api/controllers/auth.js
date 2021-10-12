@@ -37,9 +37,12 @@ module.exports = {
         try {
             console.log("send otp", req.query)
             const userExist = await checkUserExist(req.query.email)
+            console.log('user data:', userExist)
             if (userExist) {
                 const otp = generateOtp()
+                console.log('otp generated was:', otp)
                 const mailResponse = await sendMail(req.query.email, otp)
+                console.log('mail response:', mailResponse)
                 if (mailResponse) {
                     const result = await saveOtp(userExist._id, otp)
                     if (result) {

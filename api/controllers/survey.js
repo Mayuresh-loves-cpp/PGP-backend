@@ -15,6 +15,7 @@ const {
     isUserExist,
     shuffleOptions,
     saveOptionSet,
+    getFirst2Questions,
 } = require("../utils/surveyHelper")
 
 // importing other helper functions
@@ -312,6 +313,32 @@ module.exports = {
                 success: false,
             })
             res.status(400).send()
+        }
+    },
+    getFirstQuestions: async (req, res, next) => {
+        try {
+            if (req.body.userID) {
+                const data = await getFirst2Questions()
+                if (data) {
+                    res.json({
+                        success: true,
+                        data: data
+                    })
+                    res.status(200).send()
+                } else {
+                    res.json({
+                        success: false,
+                        data: null,
+                    })
+                    res.status(400).send()
+                }
+            }
+        } catch (error) {
+            res.json({
+                success: false,
+                data: null,
+            })
+            res.status(500).send()
         }
     },
     // add new route api here

@@ -2,9 +2,9 @@
 const User = require("../models/user")
 const Otp = require("../models/otpSchema")
 var mongoose = require('mongoose')
-const {
-    findByIdAndUpdate
-} = require("../models/user")
+// const {
+//     findByIdAndUpdate
+// } = require("../models/user")
 
 mongoose.set('useFindAndModify', false)
 
@@ -16,7 +16,7 @@ module.exports = {
     },
     checkUserExist: async (email) => {
         const user = await User.findOne({
-            userEmailId: email
+            userEmailId: email,
         })
         return user
     },
