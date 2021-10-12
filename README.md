@@ -1,10 +1,6 @@
 # Personal Growth Pyramid Backend
-
-Personal Growth Pyramid reassures that you have an unlimited capacity to live a life 
-overflowing with intelligence, success, peace, happiness and love. The designed tool has 
-delivered missing link between the understanding of yourself and the essentials of 
-exponential future. This will not only radically transforms your life, but it transforms people 
-around you remarkably.
+Personal Growth Pyramid is an app whose aim is to improve user's personal behavior and personality by interacting with them regularly through surveys and managing, calculating and helping them to impropve their personality.
+This is the main backend operation of the app written in node.js and express.js. The frontend of the app is a web app and written in react-naive.
 
 ## Project Setup
 Use follwing command inside project directory after cloning this repo.
