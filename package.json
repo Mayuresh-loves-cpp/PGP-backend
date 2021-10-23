@@ -4,9 +4,9 @@
   "description": "A Personal Growth development project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "author": "Mayuresh Shinde",
   "license": "ISC",

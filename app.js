@@ -2,8 +2,9 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const cors = require('cors');
+const port = process.env.PORT || 3000;
 require('dotenv').config()
 require("./api/utils/initMongodb")
 
@@ -14,14 +15,21 @@ const survey = require("./api/routes/survey");
 
 app.use(cors());
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
     extended: false
 }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // routing
 app.use('/api/v1/auth/', auth)
 app.use("/api/v1/questions", ques)
 app.use("/api/v1/survey", survey)
 
-module.exports = app;
+app.listen(port, (error) => {
+    if (error) {
+        console.log('unable to start server!');
+    } else {
+        console.log(`Server started at port ${port}\nBrowse at http://localhost:${port}/api/v1/`)
+    }
+});
+// module.exports = app;
