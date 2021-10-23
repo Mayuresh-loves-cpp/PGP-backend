@@ -2,7 +2,6 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-// const bodyParser = require("body-parser");
 const cors = require('cors');
 const port = process.env.PORT || 3000;
 require('dotenv').config()
@@ -25,6 +24,7 @@ app.use('/api/v1/auth/', auth)
 app.use("/api/v1/questions", ques)
 app.use("/api/v1/survey", survey)
 
+// starting server and listening to requests
 app.listen(port, (error) => {
     if (error) {
         console.log('unable to start server!');
@@ -32,4 +32,3 @@ app.listen(port, (error) => {
         console.log(`Server started at port ${port}\nBrowse at http://localhost:${port}/api/v1/`)
     }
 });
-// module.exports = app;
