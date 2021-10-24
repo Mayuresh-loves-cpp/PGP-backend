@@ -15,7 +15,7 @@ const survey = require("./api/routes/survey");
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({
-    extended: false
+    extended: true
 }));
 app.use(express.json());
 

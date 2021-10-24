@@ -122,22 +122,33 @@ module.exports = {
     },
     getSurvey: async (req, res, next) => {
         try {
-            if (req.body.surveyType == 'daily' || req.body.surveyType == 'weekly' || req.body.surveyType == 'monthly') {
-                var doc = await getSurvey(req.body.surveyType)
-                if (req.body.surveyType == 'daily') {
-                    doc = shuffleOptions(doc, [1, 2])
+            console.log('res local user', res.locals.user)
+            if (res.locals.user) {
+                if (req.body.surveyType == 'daily' || req.body.surveyType == 'weekly' || req.body.surveyType == 'monthly') {
+                    var doc = await getSurvey(req.body.surveyType)
+                    if (req.body.surveyType == 'daily') {
+                        doc = shuffleOptions(doc, [1, 2])
+                    }
+                    if (req.body.surveyType == 'weekly') {
+                        doc = shuffleOptions(doc, [1, 2])
+                    }
+                    sendSurvey(doc, res)
+                } else {
+                    console.log('unknown surveytype requested!')
+                    res.status(403).json({
+                        success: false,
+                        data: null
+                    });
                 }
-                if (req.body.surveyType == 'weekly') {
-                    doc = shuffleOptions(doc, [1, 2])
-                }
-                sendSurvey(doc, res)
             } else {
-                console.log('unknow surveytype requested!')
+                console.log('invalid token!')
                 res.status(403).json({
                     success: false,
-                    data: null
-                }).send();
+                    data: null,
+                    message: "invalid token"
+                });
             }
+
         } catch (error) {
             console.log(error)
             res.status(400).json({
@@ -187,28 +198,36 @@ module.exports = {
     },
     saveResponse: async (req, res, next) => {
         try {
-            const date = new Date()
-            const doc = {
-                userID: req.body.userID,
-                surveyDate: new Date(parseInt(date.getFullYear()), parseInt(date.getMonth()), parseInt(date.getDate())),
-                surveyType: req.body.surveyType,
-                response: req.body.response,
-            }
-            console.log("saving user: " + doc.userID + " has given " + doc.surveyType + " survey at " + doc.surveyDate)
-            const status = await saveres(doc);
-            console.log(status);
-            if (status) {
-                res.status(200).json({
-                    success: true,
-                    responseID: status._id,
-                    createdAt: status.createdAt,
-                    updatedAt: status.updatedAt,
-                }).send()
+            if (res.locals.user) {
+                const date = new Date()
+                const doc = {
+                    userID: req.body.userID,
+                    surveyDate: new Date(parseInt(date.getFullYear()), parseInt(date.getMonth()), parseInt(date.getDate())),
+                    surveyType: req.body.surveyType,
+                    response: req.body.response,
+                }
+                console.log("saving user: " + doc.userID + " has given " + doc.surveyType + " survey at " + doc.surveyDate)
+                const status = await saveres(doc);
+                console.log(status);
+                if (status) {
+                    res.status(200).json({
+                        success: true,
+                        responseID: status._id,
+                        createdAt: status.createdAt,
+                        updatedAt: status.updatedAt,
+                    }).send()
+                } else {
+                    res.status(500).json({
+                        success: false,
+                        responseID: null,
+                    }).send()
+                }
             } else {
-                res.status(500).json({
+                console.log('invalid token!')
+                res.status(403).json({
                     success: false,
-                    responseID: null,
-                }).send()
+                    message: "invalid token"
+                });
             }
         } catch (error) {
             res.json({
@@ -221,72 +240,80 @@ module.exports = {
     },
     surveyStatus: async (req, res, next) => {
         try {
-            const result = [];
-            const userExist = await checkExistByID(req.body.userID);
-            if (userExist) {
-                console.log("user info: ", userExist)
-                console.log("user " + userExist.firstName + " exist in user's database!");
-                const responseExist = await isUserExist(req.body.userID);
-                if (responseExist) {
-                    console.log("user have given some responses already!");
-                    const dailyStatus = await isSurveyExist(req.body.userID, "daily");
-                    console.log("daily status recived is: ", dailyStatus)
-                    if (dailyStatus != null) {
-                        result.push(dailyStatus)
-                    }
-                    const weeklyStatus = await isSurveyExist(req.body.userID, "weekly");
-                    console.log("weekly status recived is: ", weeklyStatus)
-                    if (weeklyStatus != null) {
-                        result.push(weeklyStatus)
-                    }
-                    const monthlyStatus = await isSurveyExist(req.body.userID, "monthly");
-                    console.log("monthly status recived is: ", monthlyStatus)
-                    if (monthlyStatus != null) {
-                        result.push(monthlyStatus)
-                    }
-                    if (result) {
-                        res.json({
-                            success: true,
-                            response: "recent survey exists!",
-                            surveys: result,
-                        })
-                        res.status(200).send()
+            if (res.locals.user) {
+                const result = [];
+                const userExist = await checkExistByID(req.body.userID);
+                if (userExist) {
+                    console.log("user info: ", userExist)
+                    console.log("user " + userExist.firstName + " exist in user's database!");
+                    const responseExist = await isUserExist(req.body.userID);
+                    if (responseExist) {
+                        console.log("user have given some responses already!");
+                        const dailyStatus = await isSurveyExist(req.body.userID, "daily");
+                        console.log("daily status recived is: ", dailyStatus)
+                        if (dailyStatus != null) {
+                            result.push(dailyStatus)
+                        }
+                        const weeklyStatus = await isSurveyExist(req.body.userID, "weekly");
+                        console.log("weekly status recived is: ", weeklyStatus)
+                        if (weeklyStatus != null) {
+                            result.push(weeklyStatus)
+                        }
+                        const monthlyStatus = await isSurveyExist(req.body.userID, "monthly");
+                        console.log("monthly status recived is: ", monthlyStatus)
+                        if (monthlyStatus != null) {
+                            result.push(monthlyStatus)
+                        }
+                        if (result) {
+                            res.json({
+                                success: true,
+                                response: "recent survey exists!",
+                                surveys: result,
+                            })
+                            res.status(200).send()
+                        } else {
+                            res.json({
+                                success: false,
+                                response: "no recent survey exists!",
+                            })
+                            res.status(500).send()
+                        }
                     } else {
-                        res.json({
-                            success: false,
-                            response: "no recent survey exists!",
+                        res.status(200).json({
+                            success: true,
+                            response: "user have given no surveys!",
+                            surveys: [{
+                                    "surveyType": "daily"
+                                },
+                                {
+                                    "surveyType": "weekly"
+                                },
+                                {
+                                    "surveyType": "monthly"
+                                },
+                            ]
                         })
-                        res.status(500).send()
                     }
                 } else {
-                    res.status(200).json({
-                        success: true,
-                        response: "user have given no surveys!",
-                        surveys: [{
-                                "surveyType": "daily"
-                            },
-                            {
-                                "surveyType": "weekly"
-                            },
-                            {
-                                "surveyType": "monthly"
-                            },
-                        ]
+                    res.status(404).json({
+                        success: false,
+                        response: "this user doesn't exist in database"
                     })
                 }
+                console.log("displaying result at end: ", result);
             } else {
-                res.status(404).json({
+                console.log('invalid token!')
+                res.status(403).json({
                     success: false,
-                    response: "this user doesn't exist in database"
-                })
+                    message: "invalid token"
+                });
             }
-            console.log("displaying result at end: ", result);
         } catch (error) {
             console.log(error)
             res.json({
                 success: false,
             })
-            res.status(400).send()
+            res.status(400)
         }
     },
     addOptionSet: async (req, res, next) => {

@@ -10,6 +10,9 @@ const {
 } = require("@hapi/joi")
 const userSchema = require("../models/user")
 
+//importing modules
+const jwt = require('jsonwebtoken')
+
 // importing helper functions
 const {
     addAdditionalUserInfo,
@@ -46,6 +49,11 @@ module.exports = {
                     res.json({
                         success: true,
                         data: data,
+                        token: jwt.sign({
+                            userID: doc._id
+                        }, process.env.SECRET_TOKEN || 'test secret', {
+                            expiresIn: "30d"
+                        }),
                         message: "login successful",
                     });
                 } else {
@@ -145,9 +153,17 @@ module.exports = {
     },
     additionalInfo: async (req, res, next) => {
         try {
-            const validationResult = await additionalUserInfoSchema.validateAsync(req.body)
-            console.log("validation result: -\n", validationResult)
-            await addAdditionalUserInfo(validationResult, res)
+            if (res.locals.user) {
+                const validationResult = await additionalUserInfoSchema.validateAsync(req.body)
+                console.log("validation result: -\n", validationResult)
+                await addAdditionalUserInfo(validationResult, res)
+            } else {
+                console.log('invalid token!')
+                res.status(403).json({
+                    success: false,
+                    message: "invalid token"
+                });
+            }
         } catch (error) {
             console.log(error)
             if (error.isJoi === true) {

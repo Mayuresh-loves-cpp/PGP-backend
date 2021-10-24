@@ -126,33 +126,40 @@ module.exports = {
     },
     updateUserInfo: async (req, res, next) => {
         try {
-            const {
-                userID,
-                update
-            } = req.body
-            if (checkUserExist(userID)) {
-                const result = await updateInfo(userID, update)
-                if (result) {
-                    console.log('user:', userID, 'has been found & data successfully updated')
-                    res.status(200).json({
-                        success: true,
-                        message: "user exists and data sucessfully updated"
-                    }).send()
+            if (res.locals.user) {
+                const {
+                    userID,
+                    update
+                } = req.body
+                if (checkUserExist(userID)) {
+                    const result = await updateInfo(userID, update)
+                    if (result) {
+                        console.log('user:', userID, 'has been found & data successfully updated')
+                        res.status(200).json({
+                            success: true,
+                            message: "user exists and data sucessfully updated"
+                        }).send()
+                    } else {
+                        console.log('user:', userID, 'data didn\'t get updated')
+                        res.status(500).json({
+                            success: false,
+                            message: "user exist and data isn't updated"
+                        }).send()
+                    }
                 } else {
-                    console.log('user:', userID, 'data didn\'t get updated')
-                    res.status(500).json({
+                    console.log('user:', userID, 'doesn\'t exist')
+                    res.status(404).json({
                         success: false,
-                        message: "user exist and data isn't updated"
+                        message: "user does not exist"
                     }).send()
                 }
             } else {
-                console.log('user:', userID, 'doesn\'t exist')
-                res.status(404).json({
+                console.log('invalid token!')
+                res.status(403).json({
                     success: false,
-                    message: "user does not exist"
-                }).send()
+                    message: "invalid token"
+                });
             }
-
         } catch (error) {
             console.log(error)
             console.log("recived wrong information!")
@@ -164,48 +171,56 @@ module.exports = {
     },
     upadtePassword: async (req, res, next) => {
         try {
-            const {
-                userID,
-                oldPassword,
-                newPassword
-            } = req.body
-            const validationResult = await passwordUpdateSchema.validateAsync(req.body)
-            console.log("validation result: ", validationResult)
-            const result = await checkPassword(userID, oldPassword)
-            console.log('user with old password exist: ', result)
-            if (result) {
-                console.log("user:", userID, "with given password exist in database")
-                console.log("updating password")
-                const isSame = await checkPassword(userID, newPassword)
-                if (isSame) {
-                    console.log("same old password and new password recived")
-                    res.status(409).json({
-                        success: false,
-                        message: "old password and new password must be different"
-                    }).send()
-                } else {
-                    const updateResult = await updatePassword(userID, newPassword)
-                    if (updateResult) {
-                        console.log("password updated sucessfully for user:", userID)
-                        res.status(200).json({
-                            success: true,
-                            message: "password updated sucessfully"
+            if (res.locals.user) {
+                const {
+                    userID,
+                    oldPassword,
+                    newPassword
+                } = req.body
+                const validationResult = await passwordUpdateSchema.validateAsync(req.body)
+                console.log("validation result: ", validationResult)
+                const result = await checkPassword(userID, oldPassword)
+                console.log('user with old password exist: ', result)
+                if (result) {
+                    console.log("user:", userID, "with given password exist in database")
+                    console.log("updating password")
+                    const isSame = await checkPassword(userID, newPassword)
+                    if (isSame) {
+                        console.log("same old password and new password recived")
+                        res.status(409).json({
+                            success: false,
+                            message: "old password and new password must be different"
                         }).send()
                     } else {
-                        console.log("unable to update password for user:", userID)
-                        res.status(500).json({
-                            success: false,
-                            message: "unable to update password for user"
-                        }).send()
+                        const updateResult = await updatePassword(userID, newPassword)
+                        if (updateResult) {
+                            console.log("password updated sucessfully for user:", userID)
+                            res.status(200).json({
+                                success: true,
+                                message: "password updated sucessfully"
+                            }).send()
+                        } else {
+                            console.log("unable to update password for user:", userID)
+                            res.status(500).json({
+                                success: false,
+                                message: "unable to update password for user"
+                            }).send()
+                        }
                     }
-                }
 
+                } else {
+                    console.log("user:", userID, "with given password doesn't exist in database")
+                    res.status(404).json({
+                        success: false,
+                        message: "user with given password doesn't exist in database"
+                    }).send()
+                }
             } else {
-                console.log("user:", userID, "with given password doesn't exist in database")
-                res.status(404).json({
+                console.log('invalid token!')
+                res.status(403).json({
                     success: false,
-                    message: "user with given password doesn't exist in database"
-                }).send()
+                    message: "invalid token"
+                });
             }
         } catch (error) {
             console.log(error)
@@ -217,49 +232,57 @@ module.exports = {
     },
     updateEmail: async (req, res, next) => {
         try {
-            const {
-                userID,
-                newEmail,
-                password
-            } = req.body
-            const validationResult = await emailUpdateSchema.validateAsync(req.body)
-            console.log(validationResult)
-            const result = await checkPassword(userID, password)
-            if (result) {
-                console.log("user:", userID, "with given password exist in database")
-                console.log("updating email")
-                const updateResult = await updateEmail(userID, newEmail)
-                if (updateResult == "same emailID") {
-                    console.log("same old emailID and new emailID recived")
-                    res.status(409).json({
-                        success: false,
-                        message: "same old emailID and new emailID recived"
-                    }).send()
-                } else if (updateResult == "user with given emailID exist in DB") {
-                    console.log("user with given emailID exist in DB")
-                    res.status(409).json({
-                        success: false,
-                        message: "user with given emailID already exist"
-                    }).send()
-                } else if (updateResult) {
-                    console.log("email id updated sucessfully for user:", userID)
-                    res.status(200).json({
-                        success: true,
-                        message: "email id updated sucessfully"
-                    }).send()
+            if (res.locals.user) {
+                const {
+                    userID,
+                    newEmail,
+                    password
+                } = req.body
+                const validationResult = await emailUpdateSchema.validateAsync(req.body)
+                console.log(validationResult)
+                const result = await checkPassword(userID, password)
+                if (result) {
+                    console.log("user:", userID, "with given password exist in database")
+                    console.log("updating email")
+                    const updateResult = await updateEmail(userID, newEmail)
+                    if (updateResult == "same emailID") {
+                        console.log("same old emailID and new emailID recived")
+                        res.status(409).json({
+                            success: false,
+                            message: "same old emailID and new emailID recived"
+                        }).send()
+                    } else if (updateResult == "user with given emailID exist in DB") {
+                        console.log("user with given emailID exist in DB")
+                        res.status(409).json({
+                            success: false,
+                            message: "user with given emailID already exist"
+                        }).send()
+                    } else if (updateResult) {
+                        console.log("email id updated sucessfully for user:", userID)
+                        res.status(200).json({
+                            success: true,
+                            message: "email id updated sucessfully"
+                        }).send()
+                    } else {
+                        console.log("unable to update email id for user:", userID)
+                        res.status(500).json({
+                            success: false,
+                            message: "unable to update email id for user"
+                        }).send()
+                    }
                 } else {
-                    console.log("unable to update email id for user:", userID)
-                    res.status(500).json({
+                    console.log("user:", userID, "with given credntials doesn't exist in database")
+                    res.status(404).json({
                         success: false,
-                        message: "unable to update email id for user"
-                    }).send()
+                        message: "user with given credntials doesn't exist in database"
+                    })
                 }
             } else {
-                console.log("user:", userID, "with given credntials doesn't exist in database")
-                res.status(404).json({
+                console.log('invalid token!')
+                res.status(403).json({
                     success: false,
-                    message: "user with given credntials doesn't exist in database"
-                })
+                    message: "invalid token"
+                });
             }
         } catch (error) {
             console.log(error)
