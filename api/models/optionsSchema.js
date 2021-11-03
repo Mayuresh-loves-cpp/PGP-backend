@@ -1,7 +1,7 @@
 /*************************************************
- * 
+ *
  * database schema for survey question options
- * 
+ *
  *************************************************/
 
 // importing mongoose
@@ -14,8 +14,8 @@ const optionSchema = mongoose.Schema({
     forOccupation: String,
     options: Array,
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 // exporting schema
-module.exports = mongoose.model('Usertype Options', optionSchema);
+module.exports = mongoose.model("Usertype Options", optionSchema);

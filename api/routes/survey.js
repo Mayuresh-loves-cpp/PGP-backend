@@ -1,23 +1,33 @@
 /*************************************************
- * 
+ *
  * api routes for survey opeartions
- * 
+ *
  *************************************************/
 
 // imports
-const express = require("express")
-const router = express.Router()
-const checkUser = require('../middlewares/checkUser')
+// const express = require("express");
+const router = require("express").Router();
+const checkUser = require("../middlewares/checkUser");
 
 // importing controller
-const surveyController = require("../controllers/survey")
+const surveyController = require("../controllers/survey");
+const {
+    getSurvey,
+    saveResponse,
+    surveyStatus,
+    saveQuestion,
+    addOptionSet,
+    getFirstQuestions,
+    saveQuestoionResponse,
+} = require("../controllers/survey");
 
 // survey routes
-router.post('/getSurvey', checkUser.checkUser, surveyController.getSurvey)
-router.post('/saveResponse', checkUser.checkUser, surveyController.saveResponse)
-router.post('/surveyStatus', checkUser.checkUser, surveyController.surveyStatus)
-router.post('/saveQuestion', surveyController.saveQuestion)
-router.post('/addOptionSet', surveyController.addOptionSet)
-router.post('/getFirstQuestions', surveyController.getFirstQuestions)
+router.post("/getSurvey", checkUser.checkUser, getSurvey);
+router.post("/saveResponse", checkUser.checkUser, saveResponse);
+router.post("/surveyStatus", checkUser.checkUser, surveyStatus);
+router.post("/saveQuestion", saveQuestion);
+router.post("/addOptionSet", addOptionSet);
+router.post("/getFirstQuestions", getFirstQuestions);
 
-module.exports = router
+// exporting router
+module.exports = router;

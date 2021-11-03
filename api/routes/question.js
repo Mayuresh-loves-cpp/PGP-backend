@@ -1,18 +1,23 @@
 /*************************************************
- * 
+ *
  * api routes for question opeartions
- * 
+ *
  *************************************************/
 
 // imports
-const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 
 // importing controller
-const surveyController = require("../controllers/survey")
+const {
+  saveQuestion,
+  updateQuestion,
+  saveQuestoionResponse,
+} = require("../controllers/survey");
 
 // question operational routes
-router.post('/saveQuestion', surveyController.saveQuestion)
-router.post('/updateQuestion', surveyController.updateQuestion)
+router.post("/saveQuestion", saveQuestion);
+router.post("/updateQuestion", updateQuestion);
+router.post("/saveQuestoionResponse", saveQuestoionResponse);
 
-module.exports = router
+// exporting router
+module.exports = router;

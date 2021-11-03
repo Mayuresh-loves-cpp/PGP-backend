@@ -1,7 +1,7 @@
 /*************************************************
- * 
+ *
  * database schema for survey questions
- * 
+ *
  *************************************************/
 
 // importing mongoose
@@ -17,8 +17,8 @@ const queSchema = mongoose.Schema({
     type: String, // short answer, long answer, radio button, check box, option table
     options: Array,
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 // exporting schema
-module.exports = mongoose.model('Survey Questions', queSchema);
+module.exports = mongoose.model("Survey Questions", queSchema);

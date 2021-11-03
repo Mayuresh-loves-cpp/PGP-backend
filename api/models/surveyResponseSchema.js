@@ -1,7 +1,7 @@
 /*************************************************
- * 
+ *
  * database schema for survey response
- * 
+ *
  *************************************************/
 
 // importing mongoose
@@ -12,10 +12,10 @@ const responseSchema = mongoose.Schema({
     userID: mongoose.Types.ObjectId,
     surveyDate: Date,
     surveyType: String,
-    response: Array
+    response: Array,
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
 // exporting schema
-module.exports = mongoose.model('Survey Responses', responseSchema);
+module.exports = mongoose.model("Survey Responses", responseSchema);

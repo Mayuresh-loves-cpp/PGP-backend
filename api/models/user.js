@@ -1,16 +1,17 @@
 /*************************************************
- * 
+ *
  * database schema for user
- * 
+ *
  *************************************************/
 
 // inporting mongoose
-const { number } = require("@hapi/joi");
+const {
+    number
+} = require("@hapi/joi");
 const mongoose = require("mongoose");
 
 // initializing salt for hashing
-bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;
+(bcrypt = require("bcrypt")), (SALT_WORK_FACTOR = 10);
 
 // user schema structure
 const userSchema = mongoose.Schema({
@@ -54,11 +55,11 @@ const userSchema = mongoose.Schema({
 // module.exports = mongoose.model("users", userSchema)
 
 // hashing password before saving in database
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
     const user = this;
 
     // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) return next();
+    if (!user.isModified("password")) return next();
 
     // generate a salt
     bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
@@ -76,13 +77,13 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.methods.validPassword = async (password, hashed) => {
-    console.log("checking password")
+    console.log("checking password");
     // console.log('passwords to be compared: ', password, hashed)
-    const result = await bcrypt.compare(password, hashed)
-    console.log("returning ", result)
-    return result
+    const result = await bcrypt.compare(password, hashed);
+    console.log("returning", result);
+    return result;
 };
 
-const User = mongoose.model("users", userSchema)
+const User = mongoose.model("users", userSchema);
 
-module.exports = User
+module.exports = User;

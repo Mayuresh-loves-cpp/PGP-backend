@@ -12,10 +12,10 @@ const {
     getSurvey,
     sendSurvey,
     isSurveyExist,
-    isUserExist,
     shuffleOptions,
     saveOptionSet,
     getFirst2Questions,
+    isUserResposneExist
 } = require("../utils/surveyHelper")
 
 // importing other helper functions
@@ -246,7 +246,7 @@ module.exports = {
                 if (userExist) {
                     console.log("user info: ", userExist)
                     console.log("user " + userExist.firstName + " exist in user's database!");
-                    const responseExist = await isUserExist(req.body.userID);
+                    const responseExist = await isUserResposneExist(req.body.userID);
                     if (responseExist) {
                         console.log("user have given some responses already!");
                         const dailyStatus = await isSurveyExist(req.body.userID, "daily");
@@ -368,5 +368,19 @@ module.exports = {
             res.status(500).send()
         }
     },
+    saveQuestoionResponse: async (req, res) => {
+        try {
+            const {
+                userID,
+                surveyType,
+                questioResponse
+            } = req.body;
+            const userResponse = await isUserResposneExist(userID);
+            if (userResponse) {
+            }
+        } catch (error) {
+
+        }
+    }
     // add new route api here
 }
