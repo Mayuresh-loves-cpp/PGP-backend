@@ -7,7 +7,7 @@
 // imports
 // const express = require("express");
 const router = require("express").Router();
-const checkUser = require("../middlewares/checkUser");
+const { checkUser } = require("../middlewares/checkUser");
 
 // importing controller
 const surveyController = require("../controllers/survey");
@@ -19,12 +19,14 @@ const {
     addOptionSet,
     getFirstQuestions,
     saveQuestoionResponse,
+    getSurveyQuestionsAll,
 } = require("../controllers/survey");
 
 // survey routes
-router.post("/getSurvey", checkUser.checkUser, getSurvey);
-router.post("/saveResponse", checkUser.checkUser, saveResponse);
-router.post("/surveyStatus", checkUser.checkUser, surveyStatus);
+router.post("/getSurvey", checkUser, getSurvey);
+router.post("/getSurveyQuestionsAll", checkUser, getSurveyQuestionsAll);
+router.post("/saveResponse", checkUser, saveResponse);
+router.post("/surveyStatus", checkUser, surveyStatus);
 router.post("/saveQuestion", saveQuestion);
 router.post("/addOptionSet", addOptionSet);
 router.post("/getFirstQuestions", getFirstQuestions);
