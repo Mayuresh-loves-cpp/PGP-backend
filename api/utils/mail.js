@@ -2,38 +2,58 @@
 
 // imports
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
+const { gmail } = require("googleapis/build/src/apis/gmail");
+require("dotenv").config();
 
-// helper functions
+// global env vars
+const CLIENTID = process.env.GOOGLE_OAUTH_CLIENTID;
+const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+const REFRESH_TOKEN = process.env.GOOGLE_API_REFRESH_TOKEN;
+const REDIRECT_URL = process.env.OAUTH_REDIRECT_URL;
+
+// env imports
+const EMAIL_USER = process.env.OAUTH_TEST_USER;
+
+const OAuth2Client = new google.auth.OAuth2(
+    CLIENTID,
+    CLIENT_SECRET,
+    REDIRECT_URL
+);
+
+OAuth2Client.setCredentials({
+    refresh_token: REFRESH_TOKEN,
+});
+
 const sendMail = async (email, otp) => {
     try {
-        const transporter = nodemailer.createTransport({
-            // host: "smtp.gmail.com",
+        const accessToken = await OAuth2Client.getAccessToken();
+        const transport = nodemailer.createTransport({
             service: "gmail",
-            port: 587,
-            secure: false,
             auth: {
-                // user: 'fpersonalgrowthpyramid@gmail.com',
-                // pass: 'Personal-growth-request'
-                user: process.env.HOST_EMAIL,
-                pass: process.env.HOST_PASSWORD,
+                type: "OAuth2",
+                user: EMAIL_USER,
+                clientId: CLIENTID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken,
             },
         });
-
         const mailOptions = {
-            from: process.env.HOST_EMAIL,
+            from: `"PERSONAL GROWTH PYRAMID 📧" <${EMAIL_USER}>`,
             to: email,
             subject: "Password reset otp",
-            text: "Here is the otp: " + otp,
+            text: `Here is the otp: ${otp}`,
         };
-
-        const result = await transporter.sendMail(mailOptions);
-        if (result) {
+        const response = await transport.sendMail(mailOptions);
+        if (response) {
+            console.log("mail successfully sent to email id:", email);
             return true;
         } else {
+            console.log("error sending mail");
             return false;
         }
     } catch (error) {
-        console.error(error);
         return false;
     }
 };
